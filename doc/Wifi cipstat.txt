@@ -1,0 +1,59 @@
+
+AT+RST<CR><LF>
+OK<CR><LF>
+
+
+<CR><LF>
+ ets Jan  8 2013,rst cause:4, boot mode:(3,6)<CR><LF>
+<CR><LF>
+wdt reset<CR><LF>
+load 0x40100000, len 1856, room 16 <CR><LF>
+tail 0<CR><LF>
+chksum 0x63<CR><LF>
+load 0x3ffe8000, len 776, room 8 <CR><LF>
+tail 0<CR><LF>
+chksum 0x02<CR><LF>
+load 0x3ffe8310, len 552, room 8 <CR><LF>
+tail 0<CR><LF>
+chksum 0x79<CR><LF>
+csum 0x79<CR><LF>
+<CR><LF>
+2nd boot version : 1.5<CR><LF>
+  SPI Speed      : 40MHz<CR><LF>
+  SPI Mode       : DOUT<CR><LF>
+  SPI Flash Size & Map: 8Mbit(512KB+512KB)<CR><LF>
+jump to run user1 @ 1000<CR><LF>
+<CR><LF>
+Œ????‚??²?pò?|ì???Žã$?<ETX>„?r?????????$?<ETX>„?????$?????$?<ETX>„?s²?‚<EOT>Ž??????$?????‚?b<NUL>Œ??Œc??Œc?|?Ž|??c<FS>Â?????????ò?Î?<ESC>?????<NUL>??$òƒ???????„?????<EOT>?<US>l???€<STX>??<NUL>„??„"??ä?<FS>p????„¾<DC2>?"???„c?????<CR><LF>
+ready<CR><LF>
+WIFI DISCONNECT<CR><LF>
+
+
+AT+CWMODE=1<CR>
+OK<CR><LF>
+WIFI CONNECTED<CR><LF>
+
+
+AT+CWJAP="skyfastspms","$kyfast$@SPMS@2023"<CR>
+WIFI DISCONNECT<CR><LF>
+WIFI CONNECTED<CR><LF>
+WIFI GOT IP<CR><LF>
+OK<CR><LF>
+
+
+AT+CWJAP?<CR>
+<CR><LF>
++CWJAP:"skyfastspms","38:0e:4d:d1:ec:c6",1,-83<CR><LF>
+<CR><LF>
+OK<CR><LF>
+
+
+AT+CIPSTA?<CR>
++CIPSTA:ip:"10.140.131.18"<CR><LF>  // 
++CIPSTA:gateway:"10.140.131.5"<CR><LF>
++CIPSTA:netmask:"255.255.255.192"<CR><LF>
+OK<CR><LF>
+
+
+AT+CIPMUX=0<CR>
+OK<CR><LF>
