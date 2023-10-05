@@ -41,6 +41,7 @@ private:
 #endif
 	uint8_t CMDATCwjapRead[13]="AT+CWJAP?\r\n";
 	uint8_t CmdATCipmuxWrite[15]="AT+CIPMUX=0\r\n";
+	uint8_t CMDATCifsrRead[13]="AT+CIFSR?\r\n";
 /*	uint8_t CmdAtCipStartWrite[50]= {'A','T','+','C','I','P','S','T','A','R','T',
 			'=','"','T','C','P','"',',','"','l','p','d','c','-','u','s','m','3','.',
 			'a','c','c','e','e','d','o','.','i','n','"',',','9','0','0','9','\r','\n'};*/

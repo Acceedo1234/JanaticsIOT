@@ -31,15 +31,15 @@ Core/srccpp/main.o: ../Core/srccpp/main.cpp ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/DisplayCPP/GLCD.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/Common/common.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/Modbus/Modbusrtu.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/DisplayCPP/DisplayRoutine.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/DisplayCPP/GLCD.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/Bussinesslogic/LpdcLogic.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/OfflineStorage/OfflineStorage.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/WifiEsp8266/ESP8266.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/Shift/SHIFT.h
+ D:/SourceTree/janatics/Core/srccpp/DisplayCPP/GLCD.h \
+ D:/SourceTree/janatics/Core/srccpp/Common/common.h \
+ D:/SourceTree/janatics/Core/srccpp/Modbus/Modbusrtu.h \
+ D:/SourceTree/janatics/Core/srccpp/DisplayCPP/DisplayRoutine.h \
+ D:/SourceTree/janatics/Core/srccpp/DisplayCPP/GLCD.h \
+ D:/SourceTree/janatics/Core/srccpp/Bussinesslogic/LpdcLogic.h \
+ D:/SourceTree/janatics/Core/srccpp/OfflineStorage/OfflineStorage.h \
+ D:/SourceTree/janatics/Core/srccpp/WifiEsp8266/ESP8266.h \
+ D:/SourceTree/janatics/Core/srccpp/Shift/SHIFT.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -73,12 +73,12 @@ Core/srccpp/main.o: ../Core/srccpp/main.cpp ../Core/Inc/main.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/DisplayCPP/GLCD.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/Common/common.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/Modbus/Modbusrtu.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/DisplayCPP/DisplayRoutine.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/DisplayCPP/GLCD.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/Bussinesslogic/LpdcLogic.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/OfflineStorage/OfflineStorage.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/WifiEsp8266/ESP8266.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod\ -\ URL\ Change\ -\ Copy/Core/srccpp/Shift/SHIFT.h:
+D:/SourceTree/janatics/Core/srccpp/DisplayCPP/GLCD.h:
+D:/SourceTree/janatics/Core/srccpp/Common/common.h:
+D:/SourceTree/janatics/Core/srccpp/Modbus/Modbusrtu.h:
+D:/SourceTree/janatics/Core/srccpp/DisplayCPP/DisplayRoutine.h:
+D:/SourceTree/janatics/Core/srccpp/DisplayCPP/GLCD.h:
+D:/SourceTree/janatics/Core/srccpp/Bussinesslogic/LpdcLogic.h:
+D:/SourceTree/janatics/Core/srccpp/OfflineStorage/OfflineStorage.h:
+D:/SourceTree/janatics/Core/srccpp/WifiEsp8266/ESP8266.h:
+D:/SourceTree/janatics/Core/srccpp/Shift/SHIFT.h:

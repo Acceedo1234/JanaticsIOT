@@ -15,6 +15,8 @@ uint16_t temperatureSetOL,temperaturehighSetOL,temperatureLowSetOL;
 uint16_t productiontimeSetOL=18;
 uint8_t productionhysPosSetOL,productionhysNegSetOL,SWCurrentShift,productChangeOL;
 uint16_t Production_Total,Rejection_Total;
+unsigned char ActIP[40];
+uint8_t Ip_index;
 
 extern void W25qxx_ReadSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_t OffsetInByte, uint32_t NumByteToRead_up_to_SectorSize);
 extern void W25qxx_WriteSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_t OffsetInByte, uint32_t NumByteToWrite_up_to_SectorSize);
@@ -199,7 +201,7 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 				bufferptr=0;
 				Err_bufferptr=0;
 				Rxseqdecoder=0;
-				wifi_command=70;
+				wifi_command=60;
 				Error_Retry=0;
 				WifiDisplay = 1;
 			 }
@@ -234,6 +236,24 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 				   Error_Retry=0;
 				}
 			 }
+		break;
+		case 10:
+			if((Rxwifi_data=='+')&&(bufferptr==0))
+			{
+				bufferptr=1;
+			}
+			else if(bufferptr==1)
+			{
+				ActIP[Ip_index]=Rxwifi_data;
+				Ip_index++;
+				if(Rxwifi_data=='+'){
+					bufferptr=0;
+					Rxseqdecoder=0;
+					Ip_index=0;
+					wifi_command=70;
+				}
+			}
+
 		break;
 		case 4:	   //retry need to be added
 			 if((Rxwifi_data=='O')&&(bufferptr==0))

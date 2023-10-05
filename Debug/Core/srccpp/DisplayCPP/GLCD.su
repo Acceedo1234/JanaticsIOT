@@ -1,4 +1,4 @@
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_7_23_postMethod - URL Change - Copy/Core/srccpp/Common/common.h:17:16:GPIO_PinState common::ReadtheValueAssignPinstate(uint8_t, uint8_t)	24	static
+D:/SourceTree/janatics/Core/srccpp/Common/common.h:17:16:GPIO_PinState common::ReadtheValueAssignPinstate(uint8_t, uint8_t)	24	static
 ../Core/srccpp/DisplayCPP/GLCD.cpp:14:1:GLCD::GLCD()	24	static
 ../Core/srccpp/DisplayCPP/GLCD.cpp:19:1:GLCD::~GLCD()	16	static
 ../Core/srccpp/DisplayCPP/GLCD.cpp:19:1:virtual GLCD::~GLCD()	16	static

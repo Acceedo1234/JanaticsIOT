@@ -173,6 +173,20 @@ void ESP8266::Send_WifiCmd()
 	}
 
 	break;
+	case 60:
+		NoOfdata_byte=11;
+		wifi_command=61;
+		Rxseqdecoder=10;
+		Timerdelay=0;
+		HAL_UART_Transmit_IT(&hlpuart1,CMDATCifsrRead,NoOfdata_byte);
+	break;
+	case 61:
+		if(++Timerdelay >15)
+		{
+			Timerdelay=0;
+			wifi_command=10;
+		}
+	break;
 	case 70:   //CIPMUX
 
 	NoOfdata_byte=13;
