@@ -5,5 +5,5 @@
 ../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:64:6:void LpdcLogic::productChange()	0	static
 ../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:81:6:void LpdcLogic::production()	16	static
 ../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:105:6:void LpdcLogic::manualRejection()	8	static
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:122:6:void LpdcLogic::mAlarmControl()	0	static
 ../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:40:6:void LpdcLogic::run()	8	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:122:6:void LpdcLogic::mAlarmControl()	0	static
