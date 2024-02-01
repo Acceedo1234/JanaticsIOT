@@ -56,7 +56,7 @@ void ESPRXDataSeg(void)
 	SW_Minute = ReceivePLCData9;
 	SW_Date = ReceivePLCData5;
 	SW_Month = ReceivePLCData6;
-	SW_Year = 23;
+	SW_Year = ReceivePLCData7;
 
 	Production_Total = ReceivePLCData;
 	Rejection_Total = ReceivePLCData2;

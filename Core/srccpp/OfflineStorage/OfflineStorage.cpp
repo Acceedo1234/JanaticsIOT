@@ -40,7 +40,7 @@ uint8_t checkvar;
 uint8_t BlockStatusOffline[40];
 extern uint8_t IsCurrentShiftUpdated;
 extern uint8_t UpdateStorage;
-
+//uint8_t Checkbuf[100];
 OfflineStorage::OfflineStorage() {
 	// TODO Auto-generated constructor stub
 
@@ -56,22 +56,23 @@ void OfflineStorage::run()
 	UpdateStorage=0;
 
 	ProductionSet_charFormat[100]={'\0'};
-
+	/*high limit check for system data*/
 	CurrentShift = (CurrentShift > 4)?4:CurrentShift;
 	MAC_Gen_Prod_Input1_Production = (MAC_Gen_Prod_Input1_Production >2)?0:MAC_Gen_Prod_Input1_Production;
 	MAC_Gen_Rej_Input_Production =(MAC_Gen_Rej_Input_Production >2)?0:MAC_Gen_Rej_Input_Production;
 	Dye_Temperature =(Dye_Temperature >30)?30:Dye_Temperature;
 	Connector_Temperature =(Connector_Temperature>30)?30:Connector_Temperature;
-	hour_t =(hour_t >25)?1:hour_t;
-	min_t=(min_t > 60)?0:min_t;
-	sec_t=(sec_t >60)?0:sec_t;
-	date_Rtc=(date_Rtc >32)?1:date_Rtc;
-	month_Rtc =(month_Rtc>13)?1:month_Rtc;
-	year_Rtc = (year_Rtc>2050)?1:year_Rtc;
+	hour_t =(hour_t >25)?70:hour_t;
+	min_t=(min_t > 70)?70:min_t;
+	sec_t=(sec_t >70)?70:sec_t;
+	date_Rtc=(date_Rtc >32)?70:date_Rtc;
+	month_Rtc =(month_Rtc>13)?70:month_Rtc;
+	year_Rtc = (year_Rtc>90)?70:year_Rtc;
 	Manual_RejectionCount = (Manual_RejectionCount >2)?2:Manual_RejectionCount;
 	Production_Zeit =(Production_Zeit>10)?1:Production_Zeit;
 	Rejection_Zeit = (Rejection_Zeit>10)?1:Rejection_Zeit;
-
+	SectorPos = (SectorPos > 900)?1:SectorPos;
+/*high limit check for system data*/
 	sprintf(ProductionSet_charFormat,"%c%02d,%04d,%04d,%03d,%03d,%02d:%02d:%02d %02d/%02d/%02d,%04d,%03d,%03d%c",'"',CurrentShift,MAC_Gen_Prod_Input1_Production,
 			MAC_Gen_Rej_Input_Production,Dye_Temperature,Connector_Temperature,hour_t,
 			min_t,sec_t,date_Rtc,month_Rtc,year_Rtc,Manual_RejectionCount,123,SectorPos,'"');
@@ -171,6 +172,7 @@ void OfflineStorage::ReadOfflinedataInit()
 	CurrentShift_K1						= FlashMemProductiondata[25];
 
 	W25qxx_ReadSector(BlockStatusOffline,601,0,40);
+
 
 	//if(SectorPos)
 

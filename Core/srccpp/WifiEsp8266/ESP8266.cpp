@@ -226,7 +226,7 @@ void ESP8266::Send_WifiCmd()
 	break;
 	case 100:
 
-		len = sprintf(PostUrl_CharFormat,"POST /production?mac=1503 HTTP/1.1\r\n"
+		len = sprintf(PostUrl_CharFormat,"POST /production?mac=2002 HTTP/1.1\r\n"
 									"Host: skyfastpms.janaticsindia.com:9010\r\n"
 									"Accept: text/html\r\n"
 									"Content-Type: application/json\r\n"
