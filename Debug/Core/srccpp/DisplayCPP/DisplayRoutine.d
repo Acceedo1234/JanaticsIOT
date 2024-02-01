@@ -2,8 +2,8 @@ Core/srccpp/DisplayCPP/DisplayRoutine.o: \
  ../Core/srccpp/DisplayCPP/DisplayRoutine.cpp \
  ../Core/srccpp/DisplayCPP/DisplayRoutine.h \
  ../Core/srccpp/DisplayCPP/GLCD.h \
- D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_12_23_postMethod\ -\ CNC/Core/srccpp/Common/common.h \
- ../Core/Inc/main.h ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
+ D:/SourceTree/janatics/Core/srccpp/Common/common.h ../Core/Inc/main.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h \
@@ -37,7 +37,7 @@ Core/srccpp/DisplayCPP/DisplayRoutine.o: \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h
 ../Core/srccpp/DisplayCPP/DisplayRoutine.h:
 ../Core/srccpp/DisplayCPP/GLCD.h:
-D:/PROGRAM/Naveen/Janatics/JanaticsIot_27_12_23_postMethod\ -\ CNC/Core/srccpp/Common/common.h:
+D:/SourceTree/janatics/Core/srccpp/Common/common.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:

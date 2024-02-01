@@ -41,6 +41,7 @@ Core/Startup \
 Core/srccpp/Bussinesslogic \
 Core/srccpp/Common \
 Core/srccpp/DisplayCPP \
+Core/srccpp/Dwin \
 Core/srccpp/Ethernet \
 Core/srccpp/Modbus \
 Core/srccpp/OfflineStorage \

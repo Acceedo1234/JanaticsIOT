@@ -20,6 +20,7 @@
 "./Core/srccpp/Common/common.o"
 "./Core/srccpp/DisplayCPP/DisplayRoutine.o"
 "./Core/srccpp/DisplayCPP/GLCD.o"
+"./Core/srccpp/Dwin/Dwinhmi.o"
 "./Core/srccpp/Ethernet/W5500.o"
 "./Core/srccpp/Modbus/Modbusrtu.o"
 "./Core/srccpp/OfflineStorage/OfflineStorage.o"

@@ -98,6 +98,7 @@ unsigned char data[250];
 unsigned int i;
 unsigned char Txcomplete;
 uint8_t rxTempBuff[5];
+uint8_t rxDwinBuff[5];
 uint8_t check_w,check_r;
 uint8_t testvariable[8]={1,2,3,4,5,6,7,8};
 uint8_t testvariable1[8];
@@ -177,6 +178,7 @@ int main(void)
 #endif
  // HAL_UART_Transmit_IT(&huart1,data,sizeof(data));
   HAL_UART_Receive_IT(&hlpuart1,rxTempBuff,1);
+  HAL_UART_Receive_IT(&huart2,rxDwinBuff,1);
   W25qxx_Init();
   //rtc_set_time(13,14,30);
   //rtc_set_date(2,20,2,23);
@@ -381,7 +383,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 9600;
+  huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;

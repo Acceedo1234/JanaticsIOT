@@ -15,6 +15,7 @@ RM := rm -rf
 -include Core/srccpp/OfflineStorage/subdir.mk
 -include Core/srccpp/Modbus/subdir.mk
 -include Core/srccpp/Ethernet/subdir.mk
+-include Core/srccpp/Dwin/subdir.mk
 -include Core/srccpp/DisplayCPP/subdir.mk
 -include Core/srccpp/Common/subdir.mk
 -include Core/srccpp/Bussinesslogic/subdir.mk
@@ -89,8 +90,8 @@ all: main-build
 main-build: JanaticsIOT.elf secondary-outputs
 
 # Tool invocations
-JanaticsIOT.elf JanaticsIOT.map: $(OBJS) $(USER_OBJS) D:\PROGRAM\Naveen\Janatics\JanaticsIot_27_12_23_postMethod\ -\ CNC\STM32L433RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "JanaticsIOT.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\PROGRAM\Naveen\Janatics\JanaticsIot_27_12_23_postMethod - CNC\STM32L433RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="JanaticsIOT.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+JanaticsIOT.elf JanaticsIOT.map: $(OBJS) $(USER_OBJS) D:\SourceTree\janatics\STM32L433RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "JanaticsIOT.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\SourceTree\janatics\STM32L433RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="JanaticsIOT.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

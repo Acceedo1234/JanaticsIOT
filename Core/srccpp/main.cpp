@@ -5,6 +5,7 @@
 #include "LpdcLogic.h"
 #include "OfflineStorage.h"
 #include "ESP8266.h"
+#include "Dwinhmi.h"
 #include "SHIFT.h"
 #include <stdio.h>
 #include <string.h>
@@ -36,6 +37,7 @@ void cppMain()
 	OfflineStorage offlineStorageInst;
 	ESP8266 esp8266Inst;
 	SHIFT shiftInst;
+	Dwinhmi dwinhmi;
 
 	displayRoutineInst.Init();
 	//offlineStorageInst.ECUProductionInit();/* Not needed*/
@@ -56,6 +58,7 @@ void cppMain()
 			Flag100milliSeconds=0;
 			offlineStorageInst.run();
 			ModbusInst.ModbusReadTransaction();
+			dwinhmi.dwinFrame();
 
 		}
 		if(Flag1Second)
