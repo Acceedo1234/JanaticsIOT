@@ -15,8 +15,8 @@ public:
 	virtual ~Dwinhmi();
 	void dwinFrame(void);
 private:
-	uint8_t u8ModbusRegisterdwin[120];
-	uint8_t Cntid_dwin;
+	uint8_t u8ModbusRegisterdwin[40];
+	uint8_t Cntid_dwin{0};
 	uint8_t noOfDataDwin;
 };
 

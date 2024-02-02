@@ -1,0 +1,44 @@
+Board to Hmi
+Date -2000
+month -2001
+year -2002
+Hour -2003
+Min-2004
+Sec-2005
+Production-2006
+Rejection-2007
+
+Wifi not live 2008(0)
+Wifi live 2008(1)
+
+server disconnected 2009(0)
+Server Connected 2009(1)
+
+Production count pending - 200A(1)
+Production all count updated status - 200A(0)
+
+
+board ip : 200B: 200C: 200D: 200E
+Sub net: 200F: 2010: 2011: 2012
+gateway: 2013: 2014: 2015: 2016
+mac add : 2017: 2018: 2019: 201A: 201B: 201C
+
+
+HMI to Board
+
+Server add : 3000 - 300A
+
+Port No: 300B
+
+Machine no: 300C
+ 
+
+WIfi user name : 300E - 3015
+Password : 3016
+
+
+
+
+
+
+

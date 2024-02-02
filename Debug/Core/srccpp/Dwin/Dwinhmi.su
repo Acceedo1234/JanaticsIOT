@@ -1,5 +1,5 @@
 D:/SourceTree/janatics/Core/srccpp/Common/baselib.h:29:5:int get_index(char*, char)	24	static
-../Core/srccpp/Dwin/Dwinhmi.cpp:20:1:Dwinhmi::Dwinhmi()	16	static
-../Core/srccpp/Dwin/Dwinhmi.cpp:25:1:Dwinhmi::~Dwinhmi()	16	static
-../Core/srccpp/Dwin/Dwinhmi.cpp:25:1:virtual Dwinhmi::~Dwinhmi()	16	static
-../Core/srccpp/Dwin/Dwinhmi.cpp:29:6:void Dwinhmi::dwinFrame()	16	static
+../Core/srccpp/Dwin/Dwinhmi.cpp:26:1:Dwinhmi::Dwinhmi()	16	static
+../Core/srccpp/Dwin/Dwinhmi.cpp:31:1:Dwinhmi::~Dwinhmi()	16	static
+../Core/srccpp/Dwin/Dwinhmi.cpp:31:1:virtual Dwinhmi::~Dwinhmi()	16	static
+../Core/srccpp/Dwin/Dwinhmi.cpp:35:6:void Dwinhmi::dwinFrame()	16	static

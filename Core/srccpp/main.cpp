@@ -59,7 +59,6 @@ void cppMain()
 			offlineStorageInst.run();
 			ModbusInst.ModbusReadTransaction();
 			dwinhmi.dwinFrame();
-
 		}
 		if(Flag1Second)
 		{
