@@ -13,6 +13,8 @@ GPIO_PinState GPIO_PinStateMac;
 GPIO_PinState GPIO_PinStateEjection;
 GPIO_PinState GPIO_PinStateRej;
 
+GPIO_PinState Sim_Trigger;
+
 uint8_t MAC_A_Prod_Input1_StartTimer;
 uint16_t MAC_A_Prod_Input1_CountBase;
 uint16_t MAC_Gen_Prod_Input1_Production,Production_Zeit;
@@ -86,11 +88,12 @@ void LpdcLogic::productChange()
 void LpdcLogic::production()
 {
 
-GPIO_PinStateMac = HAL_GPIO_ReadPin(GPIOC,InputMachine1_Pin);
-GPIO_PinStateEjection = HAL_GPIO_ReadPin(GPIOC,InputMachine2_Pin);
+GPIO_PinStateMac = GPIO_PIN_RESET;//HAL_GPIO_ReadPin(GPIOC,InputMachine1_Pin);
+GPIO_PinStateEjection = Sim_Trigger;//HAL_GPIO_ReadPin(GPIOC,InputMachine2_Pin);
 if(GPIO_PinStateMac == GPIO_PIN_RESET){
 	if((GPIO_PinStateEjection ==GPIO_PIN_RESET)&&(MAC_A_Prod_Input1_DeBounce))
 	{
+		Sim_Trigger= GPIO_PIN_SET;
 		  MAC_A_Prod_Input1_DeBounce	= 0;
 		  MAC_Gen_Prod_Input1_Production =1;
 		  productionInc = productionInc+1;
@@ -147,6 +150,7 @@ void LpdcLogic::machineControl(void)
 		break;
 		case 1:
 			productionInc = 0;
+			productionTarget = batchTargetquantity;
 			HAL_GPIO_WritePin(GPIOC, RELAY4_Pin, GPIO_PIN_SET);
 			processControl=2;
 		break;

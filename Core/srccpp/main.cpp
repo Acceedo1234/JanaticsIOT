@@ -22,6 +22,7 @@ extern uint8_t TxSeqComplete;
 extern uint8_t Flag1Second;
 extern uint8_t Flag1MS;
 extern uint8_t Flag100milliSeconds;
+extern GPIO_PinState Sim_Trigger;
 
 /**
   * @brief  The application entry point for cpp
@@ -42,8 +43,10 @@ void cppMain()
 	displayRoutineInst.Init();
 	//offlineStorageInst.ECUProductionInit();/* Not needed*/
 	offlineStorageInst.ReadOfflinedataInit();
+	offlineStorageInst.specialMacDataRead();
 	esp8266Inst.Init();
 	TxSeqComplete=1;
+	Sim_Trigger = GPIO_PIN_SET;
 
 	while(1)
 	{
@@ -57,6 +60,7 @@ void cppMain()
 		{
 			Flag100milliSeconds=0;
 			offlineStorageInst.run();
+			offlineStorageInst.specialMacDataWrite();
 			ModbusInst.ModbusReadTransaction();
 			dwinhmi.dwinFrame();
 		}

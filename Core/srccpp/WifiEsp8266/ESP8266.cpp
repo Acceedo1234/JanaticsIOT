@@ -304,7 +304,7 @@ void ESP8266::Send_WifiCmd()
 
 void ESP8266::RefreshWifiData()
 {
-#if 0
+
 	if((RefreshBlockInfo==0)||(powercycleRefresh==1))
 	{
 		RefreshBlockInfo=1;
@@ -371,13 +371,15 @@ void ESP8266::RefreshWifiData()
 		W25qxx_ReadSector(&ProductionSet_uintFormat_MEM[54*15],1,0,53);*///reduced due to tcp limitation
 
 	}
-#endif
+
+#if 0
 	memcpy(ProductionSet_uintFormat_MEM,dummydata,54);
 	for(scanForUrl=1;scanForUrl<=14;scanForUrl++)
 	{
 		ProductionSet_uintFormat_MEM[(54*scanForUrl)-1]=',';
 		memcpy(&ProductionSet_uintFormat_MEM[54*scanForUrl],dummydata,54);
 	}
+#endif
 }
 
 void ESP8266::Init(void)

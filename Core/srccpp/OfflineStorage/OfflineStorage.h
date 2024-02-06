@@ -15,8 +15,11 @@ public:
 	void run();
 	void ReadOfflinedataInit();
 	void ECUProductionInit(void);
+	void specialMacDataWrite(void);
+	void specialMacDataRead(void);
 private:
 	uint8_t FlashMemProductiondata[22];
+	uint8_t specialMacData[22];
 	uint16_t NoofData;
 	uint8_t tempBlockcalc;
 	uint8_t updateInBlockFill;

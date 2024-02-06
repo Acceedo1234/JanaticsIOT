@@ -16,6 +16,7 @@
  uint8_t LocCount1S;
  extern uint8_t MAC_A_Prod_Input1_StartTimer;
  extern uint16_t MAC_A_Prod_Input1_CountBase;
+ extern GPIO_PinState Sim_Trigger;
  
  void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  {
@@ -33,6 +34,7 @@
 			{
 				SimCount=0;
 				HAL_GPIO_TogglePin(GPIOC, RELAY4_Pin);
+				Sim_Trigger = GPIO_PIN_RESET;
 			}
 			Flag1Second =1;
 		}

@@ -40,6 +40,8 @@ uint8_t checkvar;
 uint8_t BlockStatusOffline[40];
 extern uint8_t IsCurrentShiftUpdated;
 extern uint8_t UpdateStorage;
+extern uint16_t productionInc;
+uint16_t productionIncK1;
 //uint8_t Checkbuf[100];
 OfflineStorage::OfflineStorage() {
 	// TODO Auto-generated constructor stub
@@ -147,6 +149,24 @@ void OfflineStorage::run()
 		W25qxx_EraseSector(601);
 		W25qxx_WriteSector(BlockStatusOffline,601,0,40);
 	}
+
+}
+void OfflineStorage::specialMacDataWrite()
+{
+	if(productionInc != productionIncK1){
+	specialMacData[0] = (uint8_t)productionInc&0x00ff;
+	specialMacData[1] = (uint8_t)(productionInc>>8)&0x00ff;
+	productionIncK1 = productionInc;
+	W25qxx_EraseSector(602);
+	W25qxx_WriteSector(specialMacData,602,0,2);
+	}
+}
+
+void OfflineStorage::specialMacDataRead()
+{
+	W25qxx_ReadSector(specialMacData,602,0,2);
+	productionInc = (specialMacData[1]<<8|specialMacData[0]);
+	productionIncK1 = productionInc;
 
 }
 
