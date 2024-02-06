@@ -1,9 +1,10 @@
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:31:1:LpdcLogic::LpdcLogic()	16	static
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:36:1:LpdcLogic::~LpdcLogic()	16	static
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:36:1:virtual LpdcLogic::~LpdcLogic()	16	static
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:40:6:void LpdcLogic::run()	16	static
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:49:6:void LpdcLogic::shiftChange()	16	static
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:64:6:void LpdcLogic::productChange()	16	static
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:81:6:void LpdcLogic::production()	16	static
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:105:6:void LpdcLogic::manualRejection()	16	static
-../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:122:6:void LpdcLogic::mAlarmControl()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:33:1:LpdcLogic::LpdcLogic()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:38:1:LpdcLogic::~LpdcLogic()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:38:1:virtual LpdcLogic::~LpdcLogic()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:42:6:void LpdcLogic::run()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:52:6:void LpdcLogic::shiftChange()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:67:6:void LpdcLogic::productChange()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:84:6:void LpdcLogic::production()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:108:6:void LpdcLogic::manualRejection()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:125:6:void LpdcLogic::mAlarmControl()	16	static
+../Core/srccpp/Bussinesslogic/LpdcLogic.cpp:137:6:void LpdcLogic::machineControl()	16	static

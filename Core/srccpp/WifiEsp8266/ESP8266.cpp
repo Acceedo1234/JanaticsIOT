@@ -189,7 +189,7 @@ void ESP8266::Send_WifiCmd()
 	}
 	break;
 	case 80:
-	NoOfdata_byte=55;//41;//41;
+	NoOfdata_byte=42;//41;//55;
 	wifi_command=81;
 	Rxseqdecoder=5;
 	Timerdelay=0;
@@ -205,6 +205,11 @@ void ESP8266::Send_WifiCmd()
 	case 90:   //CIPSEND
 
 	ContentLength = 811;//106
+	len = sprintf(PostUrl_CharFormat,"POST /production?mac=1001 HTTP/1.1\r\n"
+												"Host: 122.165.206.136:9005\r\n"
+												"Accept: text/html\r\n"
+												"Content-Type: application/json\r\n"
+												"Content-Length: %d\r\n\r\n[",ContentLength);
 	Dyn_data_calc = len+(ContentLength);
 	Framecheck=0;
 
@@ -226,8 +231,8 @@ void ESP8266::Send_WifiCmd()
 	break;
 	case 100:
 
-		len = sprintf(PostUrl_CharFormat,"POST /production?mac=2002 HTTP/1.1\r\n"
-									"Host: skyfastpms.janaticsindia.com:9010\r\n"
+		len = sprintf(PostUrl_CharFormat,"POST /production?mac=1001 HTTP/1.1\r\n"
+									"Host: 122.165.206.136:9005\r\n"
 									"Accept: text/html\r\n"
 									"Content-Type: application/json\r\n"
 									"Content-Length: %d\r\n\r\n[",ContentLength);
@@ -299,6 +304,7 @@ void ESP8266::Send_WifiCmd()
 
 void ESP8266::RefreshWifiData()
 {
+#if 0
 	if((RefreshBlockInfo==0)||(powercycleRefresh==1))
 	{
 		RefreshBlockInfo=1;
@@ -364,6 +370,13 @@ void ESP8266::RefreshWifiData()
 	/*	ProductionSet_uintFormat_MEM[(54*15)-1]=',';
 		W25qxx_ReadSector(&ProductionSet_uintFormat_MEM[54*15],1,0,53);*///reduced due to tcp limitation
 
+	}
+#endif
+	memcpy(ProductionSet_uintFormat_MEM,dummydata,54);
+	for(scanForUrl=1;scanForUrl<=14;scanForUrl++)
+	{
+		ProductionSet_uintFormat_MEM[(54*scanForUrl)-1]=',';
+		memcpy(&ProductionSet_uintFormat_MEM[54*scanForUrl],dummydata,54);
 	}
 }
 

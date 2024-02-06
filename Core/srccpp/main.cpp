@@ -66,6 +66,7 @@ void cppMain()
 			displayRoutineInst.run();
 			esp8266Inst.run();
 			shiftInst.run();
+			dwinhmi.dwinDecoder();
 		}
 		ESPRXDataSeg();
 	}

@@ -21,11 +21,15 @@ uint16_t Manual_RejectionCount;
 uint8_t CurrentShift_K1;
 uint8_t IsCurrentShiftUpdated;
 uint8_t UpdateStorage;
+uint8_t processControl;
+uint16_t productionInc;
 extern uint8_t CurrentShift;
 extern uint8_t UpdateShiftInfo;
 extern uint16_t productiontimeSetOL;
 extern uint8_t productionhysPosSetOL,productionhysNegSetOL,productChangeOL;
 extern uint8_t alarmOnOff;
+extern uint8_t resetStatus,startStopStatus;
+extern uint16_t batchTargetquantity,batchNumber,requirementId;
 
 
 LpdcLogic::LpdcLogic() {
@@ -40,6 +44,7 @@ LpdcLogic::~LpdcLogic() {
 void LpdcLogic::run()
 {
 	shiftChange();
+	machineControl();
 	productChange();
 	production();
 	manualRejection();
@@ -88,6 +93,7 @@ if(GPIO_PinStateMac == GPIO_PIN_RESET){
 	{
 		  MAC_A_Prod_Input1_DeBounce	= 0;
 		  MAC_Gen_Prod_Input1_Production =1;
+		  productionInc = productionInc+1;
 		  MAC_Gen_Rej_Input_Production = 0;
 		  UpdateStorage=1;
 
@@ -130,4 +136,28 @@ void LpdcLogic::mAlarmControl(void)
 	//	HAL_GPIO_WritePin(GPIOC, RELAY4_Pin, GPIO_PIN_RESET);
 	}
 }
+
+void LpdcLogic::machineControl(void)
+{
+#if 0
+	switch(processControl)
+	{
+		case 0:
+			processControl=1;
+		break;
+		case 1:
+			productionInc = 0;
+			HAL_GPIO_WritePin(GPIOC, RELAY4_Pin, GPIO_PIN_SET);
+			processControl=2;
+		break;
+		case 2:
+
+		break;
+		default:
+		break;
+	}
+#endif
+
+}
+
 

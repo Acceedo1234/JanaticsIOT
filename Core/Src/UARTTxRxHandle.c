@@ -87,7 +87,11 @@ void DwinFrameDecode(uint8_t Dwindatarx){
 			Dwinseq=3;
 		break;
 		case 3:
-			Dwinseq=4;
+			if(Dwindatarx == 0x83){
+			Dwinseq=4;}
+			else{
+				Dwinseq=0;
+			}
 		break;
 		case 4:
 			if(Dwindatarx == 0x30){
@@ -99,7 +103,7 @@ void DwinFrameDecode(uint8_t Dwindatarx){
 			}
 		break;
 		case 5:
-			if(Dwindatarx == 0x09){
+			if(Dwindatarx == 0x00){
 				Dwinseq=6;
 				Rx_Dwin_Data_Buff_Point=0;
 			}

@@ -8,7 +8,7 @@
 #ifndef SRCCPP_WIFIESP8266_ESP8266_H_
 #define SRCCPP_WIFIESP8266_ESP8266_H_
 
-#define SimutionEnv 1
+#define SimutionEnv 0
 
 class ESP8266 {
 public:
@@ -35,22 +35,22 @@ private:
 										'f','a','s','t','s','p','m','s','"',',','"',
 										'$','k','y','f','a','s','t','$','@','S','P','M','S','@','2','0','2','3','"','\r','\n'}; // skyfastspm , $kyfast$@SPMS@2023
 #else
-//	uint8_t CMDATCWJAPUsernamePsw[45] = {'A','T','+','C','W','J','A','P','=','"','T','P','-',
-//										'L','I','N','K','_','B','7','A','5','0','E','"',',','"',
-//										'W','A','P','@','2','0','2','3','"','\r','\n'};
+	uint8_t CMDATCWJAPUsernamePsw[45] = {'A','T','+','C','W','J','A','P','=','"','N','A','V',
+											'E','E','N','P','H','O','N','E','"',',','"',
+											'9','5','0','0','8','7','0','3','9','8','"','\r','\n'};
 #endif
 	uint8_t CMDATCwjapRead[13]="AT+CWJAP?\r\n";
 	uint8_t CmdATCipmuxWrite[15]="AT+CIPMUX=0\r\n";
 /*	uint8_t CmdAtCipStartWrite[50]= {'A','T','+','C','I','P','S','T','A','R','T',
 			'=','"','T','C','P','"',',','"','l','p','d','c','-','u','s','m','3','.',
 			'a','c','c','e','e','d','o','.','i','n','"',',','9','0','0','9','\r','\n'};*/
-/*	uint8_t CmdAtCipStartWrite[50]= {'A','T','+','C','I','P','S','T','A','R','T',
-				'=','"','T','C','P','"',',','"','1','0','3','.','5','.','1','1','3','.','1','0','1',
-				'"',',','9','0','1','0','\r','\n'};*/
-	uint8_t CmdAtCipStartWrite[55]= {'A','T','+','C','I','P','S','T','A','R','T',
+	uint8_t CmdAtCipStartWrite[50]= {'A','T','+','C','I','P','S','T','A','R','T',
+				'=','"','T','C','P','"',',','"','1','2','2','.','1','6','5','.','2','0','6','.','1','3','6',
+				'"',',','9','0','0','5','\r','\n'};
+/*	uint8_t CmdAtCipStartWrite[55]= {'A','T','+','C','I','P','S','T','A','R','T',
 				'=','"','T','C','P','"',',','"','s','k','y','f','a','s','t','p','m','s',
 				'.','j','a','n','a','t','i','c','s','i','n','d','i','a','.','c','o','m','"',',','9','0','1','0','\r','\n'}; // skyfastpms.janaticsindia.com",9011
-
+*/
 	uint8_t SendData_uintFormat[20];
 	char SendData_charFormat[20]={0};
 	char PostUrl_CharFormat[220];

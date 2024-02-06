@@ -7,6 +7,7 @@
 
 #include <Dwin/Dwinhmi.h>
 #include "baselib.h"
+#include <stdio.h>
 
 extern UART_HandleTypeDef huart2;
 constexpr uint8_t START_BYTE_1=0x5A;
@@ -20,6 +21,16 @@ extern uint8_t wifi_command;
 extern uint8_t hour_t,min_t,sec_t;
 extern uint8_t Wdate_Rtc,date_Rtc,month_Rtc,year_Rtc;
 extern uint16_t Production_Total,Rejection_Total;
+
+extern uint8_t DwinDatabuffer[255];
+extern uint8_t Rx_Dwin_Complete;
+
+uint16_t machineId;
+uint16_t portNumber;
+uint8_t serverAddress[20];
+uint8_t userNameWifi[20];
+uint8_t passwordWifi[20];
+uint8_t shiftP,len_i;
 
 uint8_t Dwinseq;
 
@@ -109,7 +120,8 @@ void Dwinhmi::dwinFrame()
 			u8ModbusRegisterdwin[3] = multipleReadRequestL;
 			u8ModbusRegisterdwin[4] = 0x30;
 			u8ModbusRegisterdwin[5] = 0x00;
-			u8ModbusRegisterdwin[6] = 0x0a;
+			u8ModbusRegisterdwin[6] = 0x1e;
+			memset(DwinDatabuffer,0,255);
 			Dwinseq=0;
 			noOfDataDwin=7;
 			Cntid_dwin=0;
@@ -118,5 +130,31 @@ void Dwinhmi::dwinFrame()
 		break;
 	}
 	HAL_UART_Transmit_IT(&huart2,u8ModbusRegisterdwin,noOfDataDwin);
+}
+
+
+void Dwinhmi::dwinDecoder()
+{
+	if(!Rx_Dwin_Complete){return;}
+	Rx_Dwin_Complete=0;
+
+	machineId = ((DwinDatabuffer[25]<<8)|DwinDatabuffer[26]);
+	if(machineId > 0){
+		portNumber = ((DwinDatabuffer[23]<<8)|DwinDatabuffer[24]);
+		for(shiftP=1,len_i=0;shiftP<=22;shiftP++,len_i++){
+			if(DwinDatabuffer[shiftP] == 0xff){break;}
+			serverAddress[len_i] = DwinDatabuffer[shiftP];
+		}
+		for(shiftP=29,len_i=0;shiftP<=49;shiftP++,len_i++){
+			if(DwinDatabuffer[shiftP] == 0xff){break;}
+			userNameWifi[len_i] = DwinDatabuffer[shiftP];
+		}
+		for(shiftP=34,len_i=0;shiftP<=30;shiftP++,len_i++){
+			if(DwinDatabuffer[shiftP] == 0xff){break;}
+			passwordWifi[len_i] = DwinDatabuffer[shiftP];
+		}
+
+	}
+
 }
 

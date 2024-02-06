@@ -20,6 +20,7 @@ public:
 	void production();
 	void shiftChange();
 	void productChange();
+	void machineControl();
 
 
 private:

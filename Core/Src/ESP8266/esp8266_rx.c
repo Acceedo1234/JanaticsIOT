@@ -15,52 +15,41 @@ uint16_t temperatureSetOL,temperaturehighSetOL,temperatureLowSetOL;
 uint16_t productiontimeSetOL=18;
 uint8_t productionhysPosSetOL,productionhysNegSetOL,SWCurrentShift,productChangeOL;
 uint16_t Production_Total,Rejection_Total;
+uint16_t batchTargetquantity,temperateSet,temperateSetHigh,temperateSetLow;
+uint16_t requirementId;
+uint16_t batchNumber;
+uint8_t resetStatus,startStopStatus;
 
 extern void W25qxx_ReadSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_t OffsetInByte, uint32_t NumByteToRead_up_to_SectorSize);
 extern void W25qxx_WriteSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_t OffsetInByte, uint32_t NumByteToWrite_up_to_SectorSize);
 extern void W25qxx_EraseSector(uint32_t SectorAddr);
 
+uint8_t wifiusernamecheck[15] = {'N','A','V','E','E','N','P','H','O','N','E'};
+
 void ReadOnlineData(void);
 
 void ESPRXDataSeg(void)
 {
-	uint16_t ReceivePLCData,ReceivePLCData2,ReceivePLCData3,ReceivePLCData4;
-	uint16_t ReceivePLCData7;
-	uint8_t ReceivePLCData11,ReceivePLCData12,ReceivePLCData13,ReceivePLCData14;
-	uint8_t ReceivePLCData5,ReceivePLCData6,ReceivePLCData8,ReceivePLCData9,ReceivePLCData10;
-	uint8_t UpdateOLdataMem  =0;
-	uint8_t FlashWriteOLdata[10];
 	if(!RxCompleteU2C1WIFI){return;}
 	RxCompleteU2C1WIFI=0;
 
-	ReceivePLCData  = Uart_rx_buffer[19]+(Uart_rx_buffer[18]*10)+(Uart_rx_buffer[17]*100)+(Uart_rx_buffer[16]*1000)+(Uart_rx_buffer[15]*10000);//Production
-	ReceivePLCData2 = Uart_rx_buffer[24]+(Uart_rx_buffer[23]*10)+(Uart_rx_buffer[22]*100)+(Uart_rx_buffer[21]*1000)+(Uart_rx_buffer[20]*10000);//Rejection
-/*	ReceivePLCData3 = Uart_rx_buffer[11]+(Uart_rx_buffer[10]*10)+(Uart_rx_buffer[9]*100)+(Uart_rx_buffer[8]*1000); //Metal Temperature Low set
-	ReceivePLCData4 = Uart_rx_buffer[15]+(Uart_rx_buffer[14]*10)+(Uart_rx_buffer[13]*100)+(Uart_rx_buffer[12]*1000);//Process Time
-*/
-	ReceivePLCData4 = Uart_rx_buffer[2]+Uart_rx_buffer[1]*100+(Uart_rx_buffer[0]*10);
+	Production_Total  	= Uart_rx_buffer[19]+(Uart_rx_buffer[18]*10)+(Uart_rx_buffer[17]*100)+(Uart_rx_buffer[16]*1000)+(Uart_rx_buffer[15]*10000);//Production
+	Rejection_Total 	= Uart_rx_buffer[24]+(Uart_rx_buffer[23]*10)+(Uart_rx_buffer[22]*100)+(Uart_rx_buffer[21]*1000)+(Uart_rx_buffer[20]*10000);//Rejection
+	batchTargetquantity = Uart_rx_buffer[29]+(Uart_rx_buffer[28]*10)+(Uart_rx_buffer[27]*100)+(Uart_rx_buffer[26]*1000)+(Uart_rx_buffer[25]*10000); //
+	temperateSet 		= Uart_rx_buffer[32]+(Uart_rx_buffer[31]*10)+(Uart_rx_buffer[30]*100);//temperateSet
+	temperateSetHigh 	= Uart_rx_buffer[35]+(Uart_rx_buffer[34]*10)+(Uart_rx_buffer[33]*100);//temperateSetHigh
+	temperateSetLow 	= Uart_rx_buffer[38]+(Uart_rx_buffer[37]*10)+(Uart_rx_buffer[36]*100);//temperateSetLow
+	requirementId	 	= Uart_rx_buffer[44]+(Uart_rx_buffer[43]*10)+(Uart_rx_buffer[42]*100)+(Uart_rx_buffer[41]*1000)+(Uart_rx_buffer[40]*10000)+(Uart_rx_buffer[39]*100000);//requirementId
+
+	batchNumber  	 = Uart_rx_buffer[57]+(Uart_rx_buffer[56]*10)+(Uart_rx_buffer[55]*100);
+	resetStatus  	 = Uart_rx_buffer[59]+(Uart_rx_buffer[58]*10);
+	startStopStatus  = Uart_rx_buffer[61]+(Uart_rx_buffer[60]*10);
 	//Date,Month,Year
-	ReceivePLCData5 = Uart_rx_buffer[4]+(Uart_rx_buffer[3]*10);//SW_Date
-	ReceivePLCData6 = Uart_rx_buffer[6]+(Uart_rx_buffer[5]*10);//SW_Month
-	ReceivePLCData7 = Uart_rx_buffer[8]+(Uart_rx_buffer[7]*10);//SW_Year
-	ReceivePLCData8 = Uart_rx_buffer[10]+(Uart_rx_buffer[9]*10);//SW_Hour
-	ReceivePLCData9 = Uart_rx_buffer[12]+(Uart_rx_buffer[11]*10);//SW_Minute
-	//Currentshift_SW
-/*	ReceivePLCData10 = Uart_rx_buffer[28];
-	ReceivePLCData11 = Uart_rx_buffer[30]+(Uart_rx_buffer[29]*10);//Hys +
-	ReceivePLCData12 = Uart_rx_buffer[32]+(Uart_rx_buffer[31]*10);//Hys -
-	ReceivePLCData13 = Uart_rx_buffer[34]+(Uart_rx_buffer[33]*10);//Production reset status
-	ReceivePLCData14 = Uart_rx_buffer[36]+(Uart_rx_buffer[35]*10);//Entry Status
-*/
-	SW_Hour = ReceivePLCData8;
-	SW_Minute = ReceivePLCData9;
-	SW_Date = ReceivePLCData5;
-	SW_Month = ReceivePLCData6;
-	SW_Year = ReceivePLCData7;
-
-	Production_Total = ReceivePLCData;
-	Rejection_Total = ReceivePLCData2;
-
+	SW_Date = Uart_rx_buffer[4]+(Uart_rx_buffer[3]*10);//SW_Date
+	SW_Month = Uart_rx_buffer[6]+(Uart_rx_buffer[5]*10);//SW_Month
+	SW_Year = Uart_rx_buffer[8]+(Uart_rx_buffer[7]*10);//SW_Year
+	SW_Hour = Uart_rx_buffer[10]+(Uart_rx_buffer[9]*10);//SW_Hour
+	SW_Minute = Uart_rx_buffer[12]+(Uart_rx_buffer[11]*10);//SW_Minute
 
 }
 
@@ -152,56 +141,81 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 			 }
 		break;
 		case 3:
-			if((Rxwifi_data=='s')&&(bufferptr==0))    //  skyfastspms
+			//wifiusernamecheck[15] "define the username at top"
+			//
+			if((Rxwifi_data== wifiusernamecheck[0])&&(bufferptr==0))
 			 {
 				bufferptr=1;
 			 }
-			 else if((Rxwifi_data=='k')&&(bufferptr==1)) //  skyfastspms
+			 else if((Rxwifi_data== wifiusernamecheck[1])&&(bufferptr==1))
 			 {
 				bufferptr=2;
 			 }
-			 else if((Rxwifi_data=='y')&&(bufferptr==2)) //  skyfastspms
+			 else if((Rxwifi_data== wifiusernamecheck[2])&&(bufferptr==2))
 			 {
 				bufferptr=3;
 			 }
 
-			 else if((Rxwifi_data=='f')&&(bufferptr==3)) //  skyfastspms
+			 else if((Rxwifi_data== wifiusernamecheck[3])&&(bufferptr==3))
 			 {
 				bufferptr=4;
 			 }
-			 else if((Rxwifi_data=='a')&&(bufferptr==4)) //  skyfastspms
+			 else if((Rxwifi_data== wifiusernamecheck[4])&&(bufferptr==4))
 			 {
 				bufferptr=5;
 			 }
-			 else if((Rxwifi_data=='s')&&(bufferptr==5)) //  skyfastspms
+			 else if((Rxwifi_data== wifiusernamecheck[5])&&(bufferptr==5))
 			 {
 				bufferptr=6;
 			 }
-			 else if((Rxwifi_data=='t')&&(bufferptr==6)) //  skyfastspms
+			 else if((Rxwifi_data== wifiusernamecheck[6])&&(bufferptr==6))
 			 {
 				bufferptr=7;
 			 }
-			 else if((Rxwifi_data=='s')&&(bufferptr==7))
+			 else if((Rxwifi_data== wifiusernamecheck[7])&&(bufferptr==7))
 			 {
 				bufferptr=8;
 			 }
-			 else if((Rxwifi_data=='p')&&(bufferptr==8))
+			 else if((Rxwifi_data== wifiusernamecheck[8])&&(bufferptr==8))
 			 {
 				bufferptr=9;
 			 }
-			 else if((Rxwifi_data=='m')&&(bufferptr==9))
+			 else if((Rxwifi_data== wifiusernamecheck[9])&&(bufferptr==9))
 			 {
-				bufferptr=10;
+				 bufferptr=0;
+				Err_bufferptr=0;
+				Rxseqdecoder=0;
+				wifi_command=70;
+				Error_Retry=0;
+				WifiDisplay = 1;
 			 }
-			 else if((Rxwifi_data=='s')&&(bufferptr==10)) //  skyfastspms
+			 else if((Rxwifi_data== wifiusernamecheck[10])&&(bufferptr==10))
 			 {
-
+				bufferptr=11;
+			 }
+			 else if((Rxwifi_data== wifiusernamecheck[11])&&(bufferptr==11))
+			 {
+				//bufferptr=12;
 				bufferptr=0;
 				Err_bufferptr=0;
 				Rxseqdecoder=0;
 				wifi_command=70;
 				Error_Retry=0;
 				WifiDisplay = 1;
+			 }
+			 else if((Rxwifi_data=='A')&&(bufferptr==12))
+			 {
+				bufferptr=13;
+			 }
+			 else if((Rxwifi_data=='X')&&(bufferptr==13))
+				 {
+				bufferptr=0;
+				Err_bufferptr=0;
+				Rxseqdecoder=0;
+				wifi_command=70;
+				Error_Retry=0;
+				WifiDisplay = 1;
+//				WifiStatusVar = 2;
 			 }
 
 
@@ -519,46 +533,237 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 				 Uart_rx_buffer[23] = DecToASCIIFun(Rxwifi_data);
 				 Data_bufferptr=33;
 			}
-			else if(Data_bufferptr==33)
+			else if(Data_bufferptr==33)//rejection calculated in software
 			{
 				 Uart_rx_buffer[24] = DecToASCIIFun(Rxwifi_data);
-				 Data_bufferptr=0;
-				RefreshBlockInfo = 0;
+				 Data_bufferptr=34;
+		/*		RefreshBlockInfo = 0;
 				RxCompleteU2C1WIFI=1;
-				Updatetimeinfo=1;
+				Updatetimeinfo=1;*/
 			}
-			else if(Data_bufferptr==36)      //rejection
+			else if(Data_bufferptr==34)      //,
 			{
-				//Uart_rx_buffer[24] = DecToASCIIFun(Rxwifi_data);
-				Data_bufferptr=0;
-				RefreshBlockInfo = 0;
-				RxCompleteU2C1WIFI=1;
-				Updatetimeinfo=1;
-
-
-				/* Data_bufferptr=0;
-				   RefreshBlockInfo = 0;
-		  		   RxCompleteU2C1WIFI=1;
-				   Updatetimeinfo=1;*/
+				Data_bufferptr=35;
 			}
-			else if(Data_bufferptr==35)      //System Minute
+			else if(Data_bufferptr==35)      //batchTargetquantity
 			 {
-				Data_bufferptr=0;
-				RefreshBlockInfo = 0;
-				RxCompleteU2C1WIFI=1;
-				Updatetimeinfo=1;
+				Data_bufferptr=36;
+				Uart_rx_buffer[25] = DecToASCIIFun(Rxwifi_data);
+			}
+			else if(Data_bufferptr==36)
+			 {
+				Uart_rx_buffer[26] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=37;
+			}
+			else if(Data_bufferptr==37)
+			{
+				Uart_rx_buffer[27] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=38;
+			}
+			else if(Data_bufferptr==38)
+			{
+				Uart_rx_buffer[28] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=39;
+			}
+			else if(Data_bufferptr==39)
+			{
+				Uart_rx_buffer[29] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=40;
+			}
+			else if(Data_bufferptr==40)//,
+			{
+				Data_bufferptr=41;
+			}
+			else if(Data_bufferptr==41)//temperateSet
+			{
+				Uart_rx_buffer[30] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=42;
+			}
+			else if(Data_bufferptr==42)
+			{
+				Uart_rx_buffer[31] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=43;
+			}
+			else if(Data_bufferptr==43)
+			{
+				Uart_rx_buffer[32] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=44;
+			}
+			else if(Data_bufferptr==44)//,
+			{
+				Data_bufferptr=45;
+			}
+			else if(Data_bufferptr==45)//temperateSetHigh
+			{
+				Uart_rx_buffer[33] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=46;
+			}
+			else if(Data_bufferptr==46)
+			{
+				Uart_rx_buffer[34] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=47;
+			}
+			else if(Data_bufferptr==47)
+			{
+				Uart_rx_buffer[35] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=48;
+			}
+			else if(Data_bufferptr==48)//,
+			{
+				Data_bufferptr=49;
+			}
+			else if(Data_bufferptr==49)//temperateSetLow
+			{
+				Uart_rx_buffer[36] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=50;
 			}
 			else if(Data_bufferptr==50)
-			 {
-				Uart_rx_buffer[36] = DecToASCIIFun(Rxwifi_data);
+			{
+				Uart_rx_buffer[37] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=51;
+			}
+			else if(Data_bufferptr==51)
+			{
+				Uart_rx_buffer[38] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=52;
+			}
+			else if(Data_bufferptr==52)//,
+			{
+				Data_bufferptr=53;
+			}
+			else if(Data_bufferptr==53)//requirementId
+			{
+				Uart_rx_buffer[39] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=54;
+			}
+			else if(Data_bufferptr==54)
+			{
+				Uart_rx_buffer[40] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=55;
+			}
+			else if(Data_bufferptr==55)
+			{
+				Uart_rx_buffer[41] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=56;
+			}
+			else if(Data_bufferptr==56)
+			{
+				Uart_rx_buffer[42] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=57;
+			}
+			else if(Data_bufferptr==57)
+			{
+				Uart_rx_buffer[43] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=58;
+			}
+			else if(Data_bufferptr==58)
+			{
+				Uart_rx_buffer[44] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=59;
+			}
+			else if(Data_bufferptr==59)//,
+			{
+				Data_bufferptr=60;
+			}
+			else if(Data_bufferptr==60)//itemNumber
+			{
+				Uart_rx_buffer[45] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=61;
+			}
+			else if(Data_bufferptr==61)
+			{
+				Uart_rx_buffer[46] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=62;
+			}
+			else if(Data_bufferptr==62)
+			{
+				Uart_rx_buffer[47] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=63;
+			}
+			else if(Data_bufferptr==63)
+			{
+				Uart_rx_buffer[48] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=64;
+			}
+			else if(Data_bufferptr==64)
+			{
+				Uart_rx_buffer[49] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=65;
+			}
+			else if(Data_bufferptr==65)
+			{
+				Uart_rx_buffer[50] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=66;
+			}
+			else if(Data_bufferptr==66)
+			{
+				Uart_rx_buffer[51] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=67;
+			}
+			else if(Data_bufferptr==67)
+			{
+				Uart_rx_buffer[52] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=68;
+			}
+			else if(Data_bufferptr==68)
+			{
+				Uart_rx_buffer[53] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=69;
+			}
+			else if(Data_bufferptr==69)
+			{
+				Uart_rx_buffer[54] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=70;
+			}
+			else if(Data_bufferptr==70)//,
+			{
+				Data_bufferptr=71;
+			}
+			else if(Data_bufferptr==71)//batchNumber
+			{
+				Uart_rx_buffer[55] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=72;
+			}
+			else if(Data_bufferptr==72)
+			{
+				Uart_rx_buffer[56] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=73;
+			}
+			else if(Data_bufferptr==73)
+			{
+				Uart_rx_buffer[57] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=74;
+			}
+			else if(Data_bufferptr==74)//,
+			{
+				Data_bufferptr=75;
+			}
+			else if(Data_bufferptr==75)//resetStatus
+			{
+				Uart_rx_buffer[58] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=76;
+			}
+			else if(Data_bufferptr==76)
+			{
+				Uart_rx_buffer[59] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=77;
+			}
+			else if(Data_bufferptr==77)//,
+			{
+				Data_bufferptr=78;
+			}
+			else if(Data_bufferptr==78)//resetStatus
+			{
+				Uart_rx_buffer[60] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=79;
+			}
+			else if(Data_bufferptr==79)
+			{
+				Uart_rx_buffer[61] = DecToASCIIFun(Rxwifi_data);
 				Data_bufferptr=0;
 				RefreshBlockInfo = 0;
 				RxCompleteU2C1WIFI=1;
 				Updatetimeinfo=1;
-			}
-			else if(Data_bufferptr==51)      //Dummy
-			{
-				 Data_bufferptr=0;
 			}
 
 		   if(Valid_DataWifi1)
