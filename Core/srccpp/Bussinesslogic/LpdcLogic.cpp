@@ -24,6 +24,7 @@ uint8_t CurrentShift_K1;
 uint8_t IsCurrentShiftUpdated;
 uint8_t UpdateStorage;
 uint8_t processControl;
+uint8_t updateMemProcCtrl;
 uint16_t productionInc;
 extern uint8_t CurrentShift;
 extern uint8_t UpdateShiftInfo;
@@ -32,6 +33,9 @@ extern uint8_t productionhysPosSetOL,productionhysNegSetOL,productChangeOL;
 extern uint8_t alarmOnOff;
 extern uint8_t resetStatus,startStopStatus;
 extern uint16_t batchTargetquantity,batchNumber,requirementId;
+uint16_t requirementIdK1;
+uint16_t productionTarget;
+uint8_t triggerStartForReq;
 
 
 LpdcLogic::LpdcLogic() {
@@ -142,25 +146,29 @@ void LpdcLogic::mAlarmControl(void)
 
 void LpdcLogic::machineControl(void)
 {
-#if 0
-	switch(processControl)
-	{
-		case 0:
-			processControl=1;
-		break;
-		case 1:
-			productionInc = 0;
-			productionTarget = batchTargetquantity;
-			HAL_GPIO_WritePin(GPIOC, RELAY4_Pin, GPIO_PIN_SET);
-			processControl=2;
-		break;
-		case 2:
-
-		break;
-		default:
-		break;
+	if(requirementId != requirementIdK1){
+		productionInc 		= 0;
+		requirementIdK1 	= requirementId;
+		updateMemProcCtrl	= 1;
+		triggerStartForReq  = 1;
+		productionTarget 	= batchTargetquantity;
 	}
-#endif
+
+	if(triggerStartForReq==1){
+		if(startStopStatus ==1){
+			triggerStartForReq=2;
+		}
+	}
+	else if(triggerStartForReq==2){
+		if((productionInc <= productionTarget)&&(startStopStatus!=2))
+		{
+			HAL_GPIO_WritePin(GPIOC, RELAY4_Pin, GPIO_PIN_SET);
+		}
+		else
+		{
+			HAL_GPIO_WritePin(GPIOC, RELAY4_Pin, GPIO_PIN_RESET);
+		}
+	}
 
 }
 

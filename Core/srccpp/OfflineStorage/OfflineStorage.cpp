@@ -39,9 +39,14 @@ uint8_t Blockdataread[]={0};
 uint8_t checkvar;
 uint8_t BlockStatusOffline[40];
 extern uint8_t IsCurrentShiftUpdated;
-extern uint8_t UpdateStorage;
+extern uint8_t UpdateStorage,updateMemProcCtrl;
 extern uint16_t productionInc;
+extern uint16_t requirementIdK1;
+extern uint16_t productionTarget,requirementId;
+extern uint8_t triggerStartForReq,startStopStatus;
 uint16_t productionIncK1;
+uint8_t triggerStartForReqK1;
+uint8_t startStopStatusK1;
 //uint8_t Checkbuf[100];
 OfflineStorage::OfflineStorage() {
 	// TODO Auto-generated constructor stub
@@ -156,9 +161,30 @@ void OfflineStorage::specialMacDataWrite()
 	if(productionInc != productionIncK1){
 	specialMacData[0] = (uint8_t)productionInc&0x00ff;
 	specialMacData[1] = (uint8_t)(productionInc>>8)&0x00ff;
+
 	productionIncK1 = productionInc;
 	W25qxx_EraseSector(602);
 	W25qxx_WriteSector(specialMacData,602,0,2);
+	}
+}
+void OfflineStorage::processDataWrite()
+{
+	if((updateMemProcCtrl==1)||(triggerStartForReq != triggerStartForReqK1)||
+		(startStopStatus != startStopStatusK1)){
+	updateMemProcCtrl=0;
+	processData[0] = (uint8_t)requirementId&0x00ff;
+	processData[1] = (uint8_t)(requirementId>>8)&0x00ff;
+	processData[2] = (uint8_t)requirementIdK1&0x00ff;
+	processData[3] = (uint8_t)(requirementIdK1>>8)&0x00ff;
+	processData[4] = (uint8_t)productionTarget&0x00ff;
+	processData[5] = (uint8_t)(productionTarget>>8)&0x00ff;
+	processData[6] = triggerStartForReq;
+	processData[7] = startStopStatus;
+	triggerStartForReqK1= triggerStartForReq;
+	startStopStatusK1 = startStopStatus;
+
+	W25qxx_EraseSector(603);
+	W25qxx_WriteSector(processData,603,0,8);
 	}
 }
 
@@ -167,7 +193,18 @@ void OfflineStorage::specialMacDataRead()
 	W25qxx_ReadSector(specialMacData,602,0,2);
 	productionInc = (specialMacData[1]<<8|specialMacData[0]);
 	productionIncK1 = productionInc;
+}
 
+void OfflineStorage::processDataRead()
+{
+	W25qxx_ReadSector(processData,603,0,8);
+	requirementId = (processData[1]<<8|processData[0]);
+	requirementIdK1 = (processData[3]<<8|processData[2]);
+	productionTarget = (processData[5]<<8|processData[4]);
+	triggerStartForReq = processData[6];
+	startStopStatus = processData[7];
+	triggerStartForReqK1= triggerStartForReq;
+	startStopStatusK1 = startStopStatus;
 }
 
 void OfflineStorage::ReadOfflinedataInit()

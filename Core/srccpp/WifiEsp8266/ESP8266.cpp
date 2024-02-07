@@ -268,7 +268,7 @@ void ESP8266::Send_WifiCmd()
 		wifi_command=105;
 	break;
 	case 105:
-		if(++Timerdelay>25)
+		if(++Timerdelay>30)
 	   {
 		Timerdelay=0;
 		wifi_command=10;

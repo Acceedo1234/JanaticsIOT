@@ -44,6 +44,7 @@ void cppMain()
 	//offlineStorageInst.ECUProductionInit();/* Not needed*/
 	offlineStorageInst.ReadOfflinedataInit();
 	offlineStorageInst.specialMacDataRead();
+	offlineStorageInst.processDataRead();
 	esp8266Inst.Init();
 	TxSeqComplete=1;
 	Sim_Trigger = GPIO_PIN_SET;
@@ -60,6 +61,7 @@ void cppMain()
 		{
 			Flag100milliSeconds=0;
 			offlineStorageInst.run();
+			offlineStorageInst.processDataWrite();
 			offlineStorageInst.specialMacDataWrite();
 			ModbusInst.ModbusReadTransaction();
 			dwinhmi.dwinFrame();
