@@ -18,7 +18,8 @@ uint16_t Production_Total,Rejection_Total;
 uint16_t batchTargetquantity,temperateSet,temperateSetHigh,temperateSetLow;
 uint16_t requirementId;
 uint16_t batchNumber;
-uint8_t resetStatus,startStopStatus;
+uint8_t resetStatus,startStopStatus,reasonEntryStatus;
+uint8_t commFeedbackFlag;
 
 extern void W25qxx_ReadSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_t OffsetInByte, uint32_t NumByteToRead_up_to_SectorSize);
 extern void W25qxx_WriteSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_t OffsetInByte, uint32_t NumByteToWrite_up_to_SectorSize);
@@ -44,12 +45,15 @@ void ESPRXDataSeg(void)
 	batchNumber  	 = Uart_rx_buffer[57]+(Uart_rx_buffer[56]*10)+(Uart_rx_buffer[55]*100);
 	resetStatus  	 = Uart_rx_buffer[59]+(Uart_rx_buffer[58]*10);
 	startStopStatus  = Uart_rx_buffer[61]+(Uart_rx_buffer[60]*10);
+	reasonEntryStatus  = Uart_rx_buffer[63]+(Uart_rx_buffer[62]*10);
 	//Date,Month,Year
 	SW_Date = Uart_rx_buffer[4]+(Uart_rx_buffer[3]*10);//SW_Date
 	SW_Month = Uart_rx_buffer[6]+(Uart_rx_buffer[5]*10);//SW_Month
 	SW_Year = Uart_rx_buffer[8]+(Uart_rx_buffer[7]*10);//SW_Year
 	SW_Hour = Uart_rx_buffer[10]+(Uart_rx_buffer[9]*10);//SW_Hour
 	SW_Minute = Uart_rx_buffer[12]+(Uart_rx_buffer[11]*10);//SW_Minute
+
+	commFeedbackFlag = 1;
 
 }
 
@@ -752,7 +756,7 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 			{
 				Data_bufferptr=78;
 			}
-			else if(Data_bufferptr==78)//resetStatus
+			else if(Data_bufferptr==78)//Reset status
 			{
 				Uart_rx_buffer[60] = DecToASCIIFun(Rxwifi_data);
 				Data_bufferptr=79;
@@ -760,11 +764,26 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 			else if(Data_bufferptr==79)
 			{
 				Uart_rx_buffer[61] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=80;
+			}
+			else if(Data_bufferptr==80)//,
+			{
+				Data_bufferptr=81;
+			}
+			else if(Data_bufferptr==81)//Reason entry status
+			{
+				Uart_rx_buffer[62] = DecToASCIIFun(Rxwifi_data);
+				Data_bufferptr=82;
+			}
+			else if(Data_bufferptr==82)
+			{
+				Uart_rx_buffer[63] = DecToASCIIFun(Rxwifi_data);
 				Data_bufferptr=0;
 				RefreshBlockInfo = 0;
 				RxCompleteU2C1WIFI=1;
 				Updatetimeinfo=1;
 			}
+
 
 		   if(Valid_DataWifi1)
 		   {

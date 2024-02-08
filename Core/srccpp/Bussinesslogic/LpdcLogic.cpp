@@ -124,6 +124,7 @@ void LpdcLogic::manualRejection()
 		  //Manual_RejectionCount	=  Manual_RejectionCount+1;
 		  MAC_Gen_Prod_Input1_Production =0;
 		  MAC_Gen_Rej_Input_Production = 1;
+		  productionInc = productionInc+1;
 		  UpdateStorage=1;
 	 }
 	 else if(GPIO_PinStateRej ==GPIO_PIN_SET)

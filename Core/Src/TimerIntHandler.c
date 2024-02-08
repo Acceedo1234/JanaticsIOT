@@ -14,6 +14,8 @@
  uint8_t SimCount;
  
  uint8_t LocCount1S;
+ uint8_t wifiConnection,commFeedbackcount=0;
+ extern uint8_t commFeedbackFlag;
  extern uint8_t MAC_A_Prod_Input1_StartTimer;
  extern uint16_t MAC_A_Prod_Input1_CountBase;
  extern GPIO_PinState Sim_Trigger;
@@ -37,12 +39,22 @@
 				Sim_Trigger = GPIO_PIN_RESET;
 			}
 			Flag1Second =1;
+			if(commFeedbackFlag==1){
+				commFeedbackFlag=0;
+				wifiConnection = 1;
+				commFeedbackcount=0;
+			}
+			else
+			{
+				if(++commFeedbackcount > 50){
+					wifiConnection=0;
+					commFeedbackcount=81;
+				}
+			}
 		}
 		if(MAC_A_Prod_Input1_StartTimer)
 		{
 		   ++MAC_A_Prod_Input1_CountBase;
 		}
-
 	}
- 
  }
