@@ -28,13 +28,14 @@ extern uint8_t Rx_Dwin_Complete,startStopStatus;
 extern uint8_t wifiConnection;
 extern uint16_t batchNumber;
 
-uint16_t machineId;
-uint16_t portNumber;
+uint16_t machineId,machineIdK1;
+uint16_t portNumber,portNumberK1;
 uint8_t serverAddress[20];
 uint8_t userNameWifi[20];
 uint8_t passwordWifi[20];
 uint8_t shiftP,len_i;
-
+uint8_t dwinRxFramValid;
+uint8_t updateDwindata;
 uint8_t Dwinseq;
 
 Dwinhmi::Dwinhmi() {
@@ -156,8 +157,9 @@ void Dwinhmi::dwinDecoder()
 	if(!Rx_Dwin_Complete){return;}
 	Rx_Dwin_Complete=0;
 
-	machineId = ((DwinDatabuffer[23]<<8)|DwinDatabuffer[24]);
-	if(machineId > 0){
+	dwinRxFramValid = ((DwinDatabuffer[23]<<8)|DwinDatabuffer[24]);
+	if(dwinRxFramValid > 0){
+		machineId  = ((DwinDatabuffer[23]<<8)|DwinDatabuffer[24]);
 		portNumber = ((DwinDatabuffer[51]<<8)|DwinDatabuffer[52]);
 		for(shiftP=1,len_i=0;shiftP<=22;shiftP++,len_i++){
 			if(DwinDatabuffer[shiftP] == 0xff){break;}
@@ -172,7 +174,15 @@ void Dwinhmi::dwinDecoder()
 			passwordWifi[len_i] = DwinDatabuffer[shiftP];
 		}
 
-	}
+		if(machineId != machineIdK1){
+			updateDwindata = 1;
+			machineIdK1 = machineId;
+		}
+		if(portNumber != portNumberK1){
+			updateDwindata = 1;
+			portNumberK1 = portNumber;
+		}
 
+	}
 }
 

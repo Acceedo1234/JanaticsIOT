@@ -38,6 +38,8 @@ uint8_t NoOfBatch_to_Send,Framecheck;
 
 extern UART_HandleTypeDef hlpuart1;
 extern uint8_t ProductionSet_uintFormat[200];
+extern uint16_t machineId;
+extern uint16_t portNumber;
 uint8_t ProductionSet_uintFormat_MEM[850]={0};
 uint8_t len=137;
 
@@ -205,11 +207,11 @@ void ESP8266::Send_WifiCmd()
 	case 90:   //CIPSEND
 
 	ContentLength = 811;//106
-	len = sprintf(PostUrl_CharFormat,"POST /production?mac=1001 HTTP/1.1\r\n"
-												"Host: 122.165.206.136:9005\r\n"
+	len = sprintf(PostUrl_CharFormat,"POST /production?mac=%d HTTP/1.1\r\n"
+												"Host: 122.165.206.136:%d\r\n"
 												"Accept: text/html\r\n"
 												"Content-Type: application/json\r\n"
-												"Content-Length: %d\r\n\r\n[",ContentLength);
+												"Content-Length: %d\r\n\r\n[",machineId,portNumber,ContentLength);
 	Dyn_data_calc = len+(ContentLength);
 	Framecheck=0;
 
@@ -231,11 +233,11 @@ void ESP8266::Send_WifiCmd()
 	break;
 	case 100:
 
-		len = sprintf(PostUrl_CharFormat,"POST /production?mac=1001 HTTP/1.1\r\n"
-									"Host: 122.165.206.136:9005\r\n"
+		len = sprintf(PostUrl_CharFormat,"POST /production?mac=%d HTTP/1.1\r\n"
+									"Host: 122.165.206.136:%d\r\n"
 									"Accept: text/html\r\n"
 									"Content-Type: application/json\r\n"
-									"Content-Length: %d\r\n\r\n[",ContentLength);
+									"Content-Length: %d\r\n\r\n[",machineId,portNumber,ContentLength);
 		memcpy(PostUrl_uintFormat,PostUrl_CharFormat,len);
 
 	/*	len = sprintf(PostUrl_CharFormat,"POST /production?mac=1002 HTTP/1.1\r\n"

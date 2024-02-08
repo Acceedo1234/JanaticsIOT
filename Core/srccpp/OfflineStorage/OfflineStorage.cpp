@@ -44,6 +44,9 @@ extern uint16_t productionInc;
 extern uint16_t requirementIdK1;
 extern uint16_t productionTarget,requirementId;
 extern uint8_t triggerStartForReq,startStopStatus;
+extern uint8_t updateDwindata;
+extern uint16_t machineId,machineIdK1;
+extern uint16_t portNumber,portNumberK1;
 uint16_t productionIncK1;
 uint8_t triggerStartForReqK1;
 uint8_t startStopStatusK1;
@@ -167,6 +170,19 @@ void OfflineStorage::specialMacDataWrite()
 	W25qxx_WriteSector(specialMacData,602,0,2);
 	}
 }
+void OfflineStorage::dwinRxDataStore()
+{
+	if(updateDwindata==0){return;}
+	updateDwindata=0;
+	dwinData[0] = (uint8_t)machineId&0x00ff;
+	dwinData[1] = (uint8_t)(machineId>>8)&0x00ff;
+	dwinData[2] = (uint8_t)portNumber&0x00ff;
+	dwinData[3] = (uint8_t)(portNumber>>8)&0x00ff;
+
+	W25qxx_EraseSector(604);
+	W25qxx_WriteSector(dwinData,604,0,4);
+
+}
 void OfflineStorage::processDataWrite()
 {
 	if((updateMemProcCtrl==1)||(triggerStartForReq != triggerStartForReqK1)||
@@ -193,6 +209,15 @@ void OfflineStorage::specialMacDataRead()
 	W25qxx_ReadSector(specialMacData,602,0,2);
 	productionInc = (specialMacData[1]<<8|specialMacData[0]);
 	productionIncK1 = productionInc;
+}
+
+void OfflineStorage::dwinRxDataRead()
+{
+	W25qxx_ReadSector(specialMacData,604,0,4);
+	machineId = (specialMacData[1]<<8|specialMacData[0]);
+	portNumber = (specialMacData[3]<<8|specialMacData[2]);
+	machineIdK1 = machineId;
+	portNumberK1 = portNumber;
 }
 
 void OfflineStorage::processDataRead()
