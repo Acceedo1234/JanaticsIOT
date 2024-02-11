@@ -21,11 +21,13 @@ public:
 	void processDataWrite(void);
 	void processDataRead(void);
 	void dwinRxDataRead(void);
+	void dwinCloudDataStore(void);
 private:
 	uint8_t FlashMemProductiondata[22];
 	uint8_t specialMacData[22];
 	uint8_t processData[22];
 	uint8_t dwinData[22];
+	uint8_t couldData[70];
 	uint16_t NoofData;
 	uint8_t tempBlockcalc;
 	uint8_t updateInBlockFill;

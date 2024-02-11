@@ -92,10 +92,10 @@ void LpdcLogic::productChange()
 void LpdcLogic::production()
 {
 
-GPIO_PinStateMac = GPIO_PIN_RESET;//HAL_GPIO_ReadPin(GPIOC,InputMachine1_Pin);
-GPIO_PinStateEjection = Sim_Trigger;//HAL_GPIO_ReadPin(GPIOC,InputMachine2_Pin);
-if(GPIO_PinStateMac == GPIO_PIN_RESET){
-	if((GPIO_PinStateEjection ==GPIO_PIN_RESET)&&(MAC_A_Prod_Input1_DeBounce))
+GPIO_PinStateMac = HAL_GPIO_ReadPin(GPIOC,InputMachine1_Pin);
+//GPIO_PinStateEjection = Sim_Trigger;//HAL_GPIO_ReadPin(GPIOC,InputMachine2_Pin);
+//if(GPIO_PinStateMac == GPIO_PIN_RESET){
+	if((GPIO_PinStateMac ==GPIO_PIN_RESET)&&(MAC_A_Prod_Input1_DeBounce))
 	{
 		Sim_Trigger= GPIO_PIN_SET;
 		  MAC_A_Prod_Input1_DeBounce	= 0;
@@ -105,7 +105,7 @@ if(GPIO_PinStateMac == GPIO_PIN_RESET){
 		  UpdateStorage=1;
 
 	}
-	else if((GPIO_PinStateEjection==GPIO_PIN_SET)&&(!MAC_A_Prod_Input1_DeBounce))
+	else if((GPIO_PinStateMac==GPIO_PIN_SET)&&(!MAC_A_Prod_Input1_DeBounce))
 	{
 		   MAC_A_Prod_Input1_DeBounce	 =1;
 
@@ -113,11 +113,11 @@ if(GPIO_PinStateMac == GPIO_PIN_RESET){
 	else{}
 }
 
-}
+//}
 
 void LpdcLogic::manualRejection()
 {
-	GPIO_PinStateRej = HAL_GPIO_ReadPin(GPIOA,InputMachine3_Pin);
+	GPIO_PinStateRej = GPIO_PIN_SET;//HAL_GPIO_ReadPin(GPIOA,InputMachine3_Pin);
 	if((GPIO_PinStateRej ==GPIO_PIN_RESET)&&(DebounceMACA_Rej))
 	 {
 		  DebounceMACA_Rej=0;

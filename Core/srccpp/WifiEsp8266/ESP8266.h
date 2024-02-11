@@ -26,6 +26,7 @@ private:
 	uint8_t j;
 	uint16_t ContentLength;
 
+	uint8_t endCommand[3]="\r\n";
 	uint8_t CMDAtRst[9]="AT+RST\r\n";
 	uint8_t CMDAtEch0[7]="ATE0\r\n";
 	uint8_t CMDATok[6] = "AT\r\n";
@@ -40,6 +41,7 @@ private:
 											'9','5','0','0','8','7','0','3','9','8','"','\r','\n'};
 #endif
 	uint8_t CMDATCwjapRead[13]="AT+CWJAP?\r\n";
+	uint8_t CMDATCifsrRead[13] = "AT+CIFSR\r\n";
 	uint8_t CmdATCipmuxWrite[15]="AT+CIPMUX=0\r\n";
 /*	uint8_t CmdAtCipStartWrite[50]= {'A','T','+','C','I','P','S','T','A','R','T',
 			'=','"','T','C','P','"',',','"','l','p','d','c','-','u','s','m','3','.',

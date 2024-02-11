@@ -5,7 +5,7 @@
  *      Author: MKS
  */
 #include "esp8266_rx.h"
-extern uint8_t checkbuff[200];
+
 extern uint8_t refinc;
 extern uint8_t RefreshBlockInfo;//update at rx end
 uint8_t alarmOnOff;
@@ -20,6 +20,13 @@ uint16_t requirementId;
 uint16_t batchNumber;
 uint8_t resetStatus,startStopStatus,reasonEntryStatus;
 uint8_t commFeedbackFlag;
+uint8_t itemNumber[11];
+uint8_t as;
+uint8_t espIpAddress[16]={0};
+uint8_t len_espIpAddress=0;
+uint8_t esp8266IpObtained=0;
+uint8_t tempbuff[100];
+uint8_t ipConfimation=0;
 
 extern void W25qxx_ReadSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_t OffsetInByte, uint32_t NumByteToRead_up_to_SectorSize);
 extern void W25qxx_WriteSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_t OffsetInByte, uint32_t NumByteToWrite_up_to_SectorSize);
@@ -53,7 +60,26 @@ void ESPRXDataSeg(void)
 	SW_Hour = Uart_rx_buffer[10]+(Uart_rx_buffer[9]*10);//SW_Hour
 	SW_Minute = Uart_rx_buffer[12]+(Uart_rx_buffer[11]*10);//SW_Minute
 
+	itemNumber[0] = Uart_rx_buffer[45];
+	itemNumber[1] = Uart_rx_buffer[46];
+	itemNumber[0] = Uart_rx_buffer[47];
+	itemNumber[0] = Uart_rx_buffer[48];
+	itemNumber[0] = Uart_rx_buffer[49];
+	itemNumber[0] = Uart_rx_buffer[50];
+	itemNumber[0] = Uart_rx_buffer[51];
+	itemNumber[0] = Uart_rx_buffer[52];
+	itemNumber[0] = Uart_rx_buffer[53];
+	itemNumber[0] = Uart_rx_buffer[54];
+
 	commFeedbackFlag = 1;
+if((esp8266IpObtained==0)&&(ipConfimation==1)){
+	for(as = 25;as<= 41;as++){
+		if(tempbuff[as] == 34)//"
+		{esp8266IpObtained=1;break;}
+		++len_espIpAddress;
+		espIpAddress[as-25]= tempbuff[as];
+	}
+}
 
 }
 
@@ -141,7 +167,10 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 			 {
 			 	bufferptr=0;
 				Rxseqdecoder=0;
-				wifi_command=49;
+				if(esp8266IpObtained==0){
+					wifi_command=121;}
+				else{
+					wifi_command=49;}
 			 }
 		break;
 		case 3:
@@ -370,8 +399,6 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 			 }
 		break;
 		case 7:
-			checkbuff[refinc]= Rxwifi_data;
-			refinc++;
 			if((Rxwifi_data=='$')&&(Data_bufferptr==0))
 			{
 				 Data_bufferptr=1;
@@ -924,6 +951,21 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 			 	bufferptr=0;
 				Rxseqdecoder=0;
 				wifi_command=20;
+			 }
+		break;
+		case 9:
+			tempbuff[refinc] = Rxwifi_data;
+			refinc= refinc+1;
+			if((Rxwifi_data=='O')&&(bufferptr==0))
+			 {
+				bufferptr=1;
+			 }
+			 else if((Rxwifi_data=='K')&&(bufferptr==1))
+			 {
+				bufferptr=0;
+				Rxseqdecoder=0;
+				ipConfimation=1;
+				wifi_command=49;
 			 }
 		break;
 	   	default:

@@ -35,8 +35,8 @@
 			if(++SimCount >= 20)
 			{
 				SimCount=0;
-				HAL_GPIO_TogglePin(GPIOC, RELAY4_Pin);
-				Sim_Trigger = GPIO_PIN_RESET;
+				HAL_GPIO_TogglePin(GPIOC, RELAY3_Pin);
+				//Sim_Trigger = GPIO_PIN_RESET;
 			}
 			Flag1Second =1;
 			if(commFeedbackFlag==1){

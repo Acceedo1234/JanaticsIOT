@@ -13,7 +13,6 @@ extern uint8_t rxTempBuff[5];
 extern uint8_t rxDwinBuff[5];
 extern uint8_t u8rxbuf[255];
 extern uint8_t Dwinseq;
-uint8_t checkbuff[200];
 uint8_t refinc;
 
 uint16_t Dye_Temperature;

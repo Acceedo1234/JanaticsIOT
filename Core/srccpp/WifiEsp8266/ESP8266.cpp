@@ -31,17 +31,20 @@ uint8_t url_buffer;
 uint16_t Dyn_data_calc;
 uint16_t ContentLength;
 uint8_t RefreshBlockInfo;
-extern uint8_t BlockStatusOffline[40];
 uint8_t powercycleRefresh;
-
 uint8_t NoOfBatch_to_Send,Framecheck;
+uint8_t ProductionSet_uintFormat_MEM[850]={0};
+uint8_t len=137;
+char espIpAddressSt[16];
 
 extern UART_HandleTypeDef hlpuart1;
 extern uint8_t ProductionSet_uintFormat[200];
 extern uint16_t machineId;
 extern uint16_t portNumber;
-uint8_t ProductionSet_uintFormat_MEM[850]={0};
-uint8_t len=137;
+extern uint8_t refinc;
+extern uint8_t BlockStatusOffline[40];
+extern uint8_t espIpAddress[16];
+extern uint8_t len_espIpAddress;
 
 
 ESP8266::ESP8266() {
@@ -152,6 +155,24 @@ void ESP8266::Send_WifiCmd()
 		wifi_command=10;	//41
 	}
 	break;
+	case 121:
+		bufferptr=0;
+		Rxseqdecoder=9;
+		refinc=0;
+		if(++Timerdelay >8)
+		{
+			Timerdelay=0;
+			HAL_UART_Transmit_IT(&hlpuart1,CMDATCifsrRead,10);
+		}
+	break;
+	case 122:
+		if(++Timerdelay >4)
+		{
+			Timerdelay=0;
+			wifi_command=49;
+			Rxseqdecoder=0;
+		}
+	break;
 	case 49:
 	if(++Timerdelay >8)
 	{
@@ -207,11 +228,12 @@ void ESP8266::Send_WifiCmd()
 	case 90:   //CIPSEND
 
 	ContentLength = 811;//106
-	len = sprintf(PostUrl_CharFormat,"POST /production?mac=%d HTTP/1.1\r\n"
+	memcpy(espIpAddressSt,espIpAddress,11);
+	len = sprintf(PostUrl_CharFormat,"POST /production?mac=%d&&ipAddress=%s HTTP/1.1\r\n"
 												"Host: 122.165.206.136:%d\r\n"
 												"Accept: text/html\r\n"
 												"Content-Type: application/json\r\n"
-												"Content-Length: %d\r\n\r\n[",machineId,portNumber,ContentLength);
+												"Content-Length: %d\r\n\r\n[",machineId,espIpAddressSt,portNumber,ContentLength);
 	Dyn_data_calc = len+(ContentLength);
 	Framecheck=0;
 
@@ -233,11 +255,11 @@ void ESP8266::Send_WifiCmd()
 	break;
 	case 100:
 
-		len = sprintf(PostUrl_CharFormat,"POST /production?mac=%d HTTP/1.1\r\n"
+		len = sprintf(PostUrl_CharFormat,"POST /production?mac=%d&ipAddress=%s HTTP/1.1\r\n"
 									"Host: 122.165.206.136:%d\r\n"
 									"Accept: text/html\r\n"
 									"Content-Type: application/json\r\n"
-									"Content-Length: %d\r\n\r\n[",machineId,portNumber,ContentLength);
+									"Content-Length: %d\r\n\r\n[",machineId,espIpAddressSt,portNumber,ContentLength);
 		memcpy(PostUrl_uintFormat,PostUrl_CharFormat,len);
 
 	/*	len = sprintf(PostUrl_CharFormat,"POST /production?mac=1002 HTTP/1.1\r\n"
@@ -267,10 +289,15 @@ void ESP8266::Send_WifiCmd()
 		url_buffer++;
 		HAL_UART_Transmit_IT(&hlpuart1,OnlineData_buffer,url_buffer);
 		Rxseqdecoder=7;
+		wifi_command=106;
+	break;
+	case 106:
+		Rxseqdecoder=7;
 		wifi_command=105;
+		HAL_UART_Transmit_IT(&hlpuart1,endCommand,2);
 	break;
 	case 105:
-		if(++Timerdelay>30)
+		if(++Timerdelay>20)
 	   {
 		Timerdelay=0;
 		wifi_command=10;

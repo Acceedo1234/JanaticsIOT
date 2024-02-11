@@ -12,7 +12,7 @@
 extern UART_HandleTypeDef huart2;
 constexpr uint8_t START_BYTE_1=0x5A;
 constexpr uint8_t START_BYTE_2=0xA5;
-constexpr uint8_t multipleWriteRequestH = 0x1C;
+constexpr uint8_t multipleWriteRequestH = 0x33;
 constexpr uint8_t multipleWriteRequestL = 0x82;
 constexpr uint8_t multipleReadRequestH = 0x04;
 constexpr uint8_t multipleReadRequestL = 0x83;
@@ -27,16 +27,20 @@ extern uint8_t DwinDatabuffer[255];
 extern uint8_t Rx_Dwin_Complete,startStopStatus;
 extern uint8_t wifiConnection;
 extern uint16_t batchNumber;
+extern uint8_t itemNumber[11];
 
 uint16_t machineId,machineIdK1;
 uint16_t portNumber,portNumberK1;
-uint8_t serverAddress[20];
-uint8_t userNameWifi[20];
-uint8_t passwordWifi[20];
+uint8_t serverAddress[20],serverAddressK1[20];
+uint8_t userNameWifi[20],userNameWifiK1[20];
+uint8_t passwordWifi[20],passwordWifiK1[20];
 uint8_t shiftP,len_i;
-uint8_t dwinRxFramValid;
+uint16_t dwinRxFramValid;
 uint8_t updateDwindata;
 uint8_t Dwinseq;
+uint8_t lengthOfServerAdd,lengthOfUserName,lengthOfPassword;
+uint8_t CheckP;
+uint8_t updateCloudConn;
 
 Dwinhmi::Dwinhmi() {
 	// TODO Auto-generated constructor stub
@@ -71,23 +75,42 @@ void Dwinhmi::dwinFrame()
 			u8ModbusRegisterdwin[16] = 0x00;
 			u8ModbusRegisterdwin[17] = sec_t;
 			u8ModbusRegisterdwin[18] = highByte(Production_Total);
-			u8ModbusRegisterdwin[19] = lowByte(Production_Total);//2006
+			u8ModbusRegisterdwin[19] = lowByte(Production_Total);
 			u8ModbusRegisterdwin[20] = highByte(Rejection_Total);
-			u8ModbusRegisterdwin[21] = lowByte(Rejection_Total);//2007
+			u8ModbusRegisterdwin[21] = lowByte(Rejection_Total);
 			u8ModbusRegisterdwin[22] = highByte(0);
 			u8ModbusRegisterdwin[23] = lowByte(wifiConnection);//2008
 			u8ModbusRegisterdwin[24] = highByte(0);
-			u8ModbusRegisterdwin[25] =lowByte(wifiConnection);//2009
+			u8ModbusRegisterdwin[25] = lowByte(wifiConnection);//2009
 			u8ModbusRegisterdwin[26] = highByte(0);
 			u8ModbusRegisterdwin[27] = lowByte(12);//200A
-			u8ModbusRegisterdwin[28] = highByte(productionInc);
-			u8ModbusRegisterdwin[29] = lowByte(productionInc);//200B
-			u8ModbusRegisterdwin[30] = highByte(productionTarget);
-			u8ModbusRegisterdwin[31] = lowByte(productionTarget);//200C
+			u8ModbusRegisterdwin[28] = highByte(productionTarget);
+			u8ModbusRegisterdwin[29] = lowByte(productionTarget);//200B
+			u8ModbusRegisterdwin[30] = highByte(productionInc);
+			u8ModbusRegisterdwin[31] = lowByte(productionInc);//200C
 			u8ModbusRegisterdwin[32] = highByte(startStopStatus);
 			u8ModbusRegisterdwin[33] = lowByte(startStopStatus);//200C
 			u8ModbusRegisterdwin[34] = highByte(batchNumber);
 			u8ModbusRegisterdwin[35] = lowByte(batchNumber);//200C
+			u8ModbusRegisterdwin[36] = highByte(0);
+			u8ModbusRegisterdwin[37] = lowByte(0);//200D
+			u8ModbusRegisterdwin[38] = highByte(0);
+			u8ModbusRegisterdwin[39] = lowByte(0);//200e
+			u8ModbusRegisterdwin[40] = highByte(0);
+			u8ModbusRegisterdwin[41] = lowByte(0);//200f
+			u8ModbusRegisterdwin[42] = highByte(0);
+			u8ModbusRegisterdwin[43] = lowByte(0);//2010
+			u8ModbusRegisterdwin[44] = 'I';//itemNumber[0];
+			u8ModbusRegisterdwin[45] = 'T';//itemNumber[1];//2011
+			u8ModbusRegisterdwin[46] = 'E';//itemNumber[2];
+			u8ModbusRegisterdwin[47] = 'M';//itemNumber[3];//2011
+			u8ModbusRegisterdwin[48] = '1';//itemNumber[4];
+			u8ModbusRegisterdwin[49] = 'T';//itemNumber[5];//2011
+			u8ModbusRegisterdwin[50] = 'E';//itemNumber[6];
+			u8ModbusRegisterdwin[51] = 'S';//itemNumber[7];//2011
+			u8ModbusRegisterdwin[52] = '1';//itemNumber[8];
+			u8ModbusRegisterdwin[53] = '2';//itemNumber[9];//2011
+			noOfDataDwin=54;
 
 			noOfDataDwin=36;
    			Cntid_dwin=1;
@@ -121,15 +144,33 @@ void Dwinhmi::dwinFrame()
 			u8ModbusRegisterdwin[25] = lowByte(wifiConnection);//2009
 			u8ModbusRegisterdwin[26] = highByte(0);
 			u8ModbusRegisterdwin[27] = lowByte(12);//200A
-			u8ModbusRegisterdwin[28] = highByte(productionInc);
-			u8ModbusRegisterdwin[29] = lowByte(productionInc);//200B
-			u8ModbusRegisterdwin[30] = highByte(productionTarget);
-			u8ModbusRegisterdwin[31] = lowByte(productionTarget);//200C
+			u8ModbusRegisterdwin[28] = highByte(productionTarget);
+			u8ModbusRegisterdwin[29] = lowByte(productionTarget);//200B
+			u8ModbusRegisterdwin[30] = highByte(productionInc);
+			u8ModbusRegisterdwin[31] = lowByte(productionInc);//200C
 			u8ModbusRegisterdwin[32] = highByte(startStopStatus);
 			u8ModbusRegisterdwin[33] = lowByte(startStopStatus);//200C
 			u8ModbusRegisterdwin[34] = highByte(batchNumber);
 			u8ModbusRegisterdwin[35] = lowByte(batchNumber);//200C
-			noOfDataDwin=36;
+	/*		u8ModbusRegisterdwin[36] = highByte(0);
+			u8ModbusRegisterdwin[37] = lowByte(0);//200D
+			u8ModbusRegisterdwin[38] = highByte(0);
+			u8ModbusRegisterdwin[39] = lowByte(0);//200e
+			u8ModbusRegisterdwin[40] = highByte(0);
+			u8ModbusRegisterdwin[41] = lowByte(0);//200f
+			u8ModbusRegisterdwin[42] = highByte(0);
+			u8ModbusRegisterdwin[43] = lowByte(0);//2010
+			u8ModbusRegisterdwin[44] = 'I';//itemNumber[0];
+			u8ModbusRegisterdwin[45] = 'T';//itemNumber[1];//2011
+			u8ModbusRegisterdwin[46] = 'E';//itemNumber[2];
+			u8ModbusRegisterdwin[47] = 'M';//itemNumber[3];//2011
+			u8ModbusRegisterdwin[48] = '1';//itemNumber[4];
+			u8ModbusRegisterdwin[49] = 'T';//itemNumber[5];//2011
+			u8ModbusRegisterdwin[50] = 'E';//itemNumber[6];
+			u8ModbusRegisterdwin[51] = 'S';//itemNumber[7];//2011
+			u8ModbusRegisterdwin[52] = '1';//itemNumber[8];
+			u8ModbusRegisterdwin[53] = '2';//itemNumber[9];//2011*/
+			noOfDataDwin=54;
 			Cntid_dwin=2;
 		break;
 		case 2:
@@ -162,15 +203,15 @@ void Dwinhmi::dwinDecoder()
 		machineId  = ((DwinDatabuffer[23]<<8)|DwinDatabuffer[24]);
 		portNumber = ((DwinDatabuffer[51]<<8)|DwinDatabuffer[52]);
 		for(shiftP=1,len_i=0;shiftP<=22;shiftP++,len_i++){
-			if(DwinDatabuffer[shiftP] == 0xff){break;}
+			if(DwinDatabuffer[shiftP] == 0xff){lengthOfServerAdd = len_i;break;}
 			serverAddress[len_i] = DwinDatabuffer[shiftP];
 		}
 		for(shiftP=27,len_i=0;shiftP<=49;shiftP++,len_i++){
-			if(DwinDatabuffer[shiftP] == 0xff){break;}
+			if(DwinDatabuffer[shiftP] == 0xff){lengthOfUserName = len_i;break;}
 			userNameWifi[len_i] = DwinDatabuffer[shiftP];
 		}
 		for(shiftP=53,len_i=0;shiftP<=70;shiftP++,len_i++){
-			if(DwinDatabuffer[shiftP] == 0xff){break;}
+			if(DwinDatabuffer[shiftP] == 0xff){lengthOfPassword = len_i;break;}
 			passwordWifi[len_i] = DwinDatabuffer[shiftP];
 		}
 
@@ -183,6 +224,24 @@ void Dwinhmi::dwinDecoder()
 			portNumberK1 = portNumber;
 		}
 
-	}
+		for(CheckP=0;CheckP<lengthOfServerAdd;CheckP++){
+				if(serverAddress[CheckP] != serverAddressK1[CheckP]){
+				updateCloudConn = 1;
+				break;
+			}
+		}
+		for(CheckP=0;CheckP<lengthOfUserName;CheckP++){
+						if(userNameWifi[CheckP] != userNameWifiK1[CheckP]){
+						updateCloudConn = 1;
+						break;
+			}
+		}
+		for(CheckP=0;CheckP<lengthOfPassword;CheckP++){
+						if(passwordWifi[CheckP] != passwordWifiK1[CheckP]){
+						updateCloudConn = 1;
+						break;
+			}
+		}
+  }
 }
 

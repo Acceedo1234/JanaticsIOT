@@ -16,7 +16,7 @@ public:
 	void dwinFrame(void);
 	void dwinDecoder(void);
 private:
-	uint8_t u8ModbusRegisterdwin[40];
+	uint8_t u8ModbusRegisterdwin[60];
 	uint8_t Cntid_dwin{0};
 	uint8_t noOfDataDwin;
 };

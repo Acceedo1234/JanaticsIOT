@@ -47,9 +47,15 @@ extern uint8_t triggerStartForReq,startStopStatus;
 extern uint8_t updateDwindata;
 extern uint16_t machineId,machineIdK1;
 extern uint16_t portNumber,portNumberK1;
+extern uint8_t updateCloudConn;
+extern uint8_t lengthOfServerAdd,lengthOfUserName,lengthOfPassword;
+extern uint8_t serverAddress[20],serverAddressK1[20];
+extern uint8_t userNameWifi[20],userNameWifiK1[20];
+extern uint8_t passwordWifi[20],passwordWifiK1[20];
 uint16_t productionIncK1;
 uint8_t triggerStartForReqK1;
 uint8_t startStopStatusK1;
+
 //uint8_t Checkbuf[100];
 OfflineStorage::OfflineStorage() {
 	// TODO Auto-generated constructor stub
@@ -181,6 +187,33 @@ void OfflineStorage::dwinRxDataStore()
 
 	W25qxx_EraseSector(604);
 	W25qxx_WriteSector(dwinData,604,0,4);
+}
+void OfflineStorage::dwinCloudDataStore()
+{
+	uint8_t i;
+	if(!updateCloudConn){return;}
+	updateCloudConn=0;
+	lengthOfServerAdd =(lengthOfServerAdd >20)?20:lengthOfServerAdd;
+	for(i=0;i<20;i++){
+		couldData[i]=serverAddress[i];
+	}
+	lengthOfUserName =(lengthOfUserName >20)?20:lengthOfUserName;
+	for(i=0;i<20;i++){
+		couldData[i+20]=userNameWifi[i];
+	}
+	lengthOfPassword =(lengthOfPassword >20)?20:lengthOfPassword;
+	for(i=0;i<20;i++){
+		couldData[i+40]=passwordWifi[i];
+	}
+	couldData[60] = lengthOfServerAdd;
+	couldData[61] = lengthOfUserName;
+	couldData[62] = lengthOfPassword;
+
+	memcpy(serverAddressK1,serverAddress,20);
+	memcpy(userNameWifiK1,userNameWifi,20);
+	memcpy(passwordWifiK1,passwordWifi,20);
+//	W25qxx_EraseSector(605);
+//	W25qxx_WriteSector(dwinData,605,0,4);
 
 }
 void OfflineStorage::processDataWrite()

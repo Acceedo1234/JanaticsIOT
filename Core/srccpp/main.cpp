@@ -65,6 +65,8 @@ void cppMain()
 			offlineStorageInst.processDataWrite();
 			offlineStorageInst.specialMacDataWrite();
 			offlineStorageInst.dwinRxDataStore();
+			offlineStorageInst.dwinCloudDataStore();
+
 			ModbusInst.ModbusReadTransaction();
 			dwinhmi.dwinFrame();
 		}

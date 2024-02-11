@@ -91,10 +91,12 @@ void cppMain(void);
 #define W5500RST_GPIO_Port GPIOC
 #define InputMachine1_Pin GPIO_PIN_8
 #define InputMachine1_GPIO_Port GPIOC
-#define InputMachine2_Pin GPIO_PIN_9
-#define InputMachine2_GPIO_Port GPIOC
-#define InputMachine3_Pin GPIO_PIN_8
-#define InputMachine3_GPIO_Port GPIOA
+#define ProductionInput1_Pin GPIO_PIN_9
+#define ProductionInput1_GPIO_Port GPIOC
+#define ProductionInput1_EXTI_IRQn EXTI9_5_IRQn
+#define ProductionInput2_Pin GPIO_PIN_8
+#define ProductionInput2_GPIO_Port GPIOA
+#define ProductionInput2_EXTI_IRQn EXTI9_5_IRQn
 #define InputMachine4_Pin GPIO_PIN_9
 #define InputMachine4_GPIO_Port GPIOA
 #define InputMachine5_Pin GPIO_PIN_10

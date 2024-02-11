@@ -70,6 +70,8 @@ wiz_NetInfo checkgWIZNETINFO;
 uint8_t tmpstr[6];
 uint8_t test_aa;
 uint8_t tmp;
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -683,14 +685,26 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(W5500_CS_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : InputMachine1_Pin InputMachine2_Pin */
-  GPIO_InitStruct.Pin = InputMachine1_Pin|InputMachine2_Pin;
+  /*Configure GPIO pin : InputMachine1_Pin */
+  GPIO_InitStruct.Pin = InputMachine1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  HAL_GPIO_Init(InputMachine1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : InputMachine3_Pin InputMachine4_Pin InputMachine5_Pin InputMachine6_Pin */
-  GPIO_InitStruct.Pin = InputMachine3_Pin|InputMachine4_Pin|InputMachine5_Pin|InputMachine6_Pin;
+  /*Configure GPIO pin : ProductionInput1_Pin */
+  GPIO_InitStruct.Pin = ProductionInput1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(ProductionInput1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : ProductionInput2_Pin */
+  GPIO_InitStruct.Pin = ProductionInput2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(ProductionInput2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : InputMachine4_Pin InputMachine5_Pin InputMachine6_Pin */
+  GPIO_InitStruct.Pin = InputMachine4_Pin|InputMachine5_Pin|InputMachine6_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -708,6 +722,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GLCDCS1_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 }
 
