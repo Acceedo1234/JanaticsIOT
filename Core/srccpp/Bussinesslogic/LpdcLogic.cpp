@@ -91,26 +91,7 @@ void LpdcLogic::productChange()
 
 void LpdcLogic::production()
 {
-
 GPIO_PinStateMac = HAL_GPIO_ReadPin(GPIOC,InputMachine1_Pin);
-//GPIO_PinStateEjection = Sim_Trigger;//HAL_GPIO_ReadPin(GPIOC,InputMachine2_Pin);
-//if(GPIO_PinStateMac == GPIO_PIN_RESET){
-	if((GPIO_PinStateMac ==GPIO_PIN_RESET)&&(MAC_A_Prod_Input1_DeBounce))
-	{
-		Sim_Trigger= GPIO_PIN_SET;
-		  MAC_A_Prod_Input1_DeBounce	= 0;
-		  MAC_Gen_Prod_Input1_Production =1;
-		  productionInc = productionInc+1;
-		  MAC_Gen_Rej_Input_Production = 0;
-		  UpdateStorage=1;
-
-	}
-	else if((GPIO_PinStateMac==GPIO_PIN_SET)&&(!MAC_A_Prod_Input1_DeBounce))
-	{
-		   MAC_A_Prod_Input1_DeBounce	 =1;
-
-	}
-	else{}
 }
 
 //}

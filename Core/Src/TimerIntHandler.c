@@ -5,6 +5,9 @@
  *      Author: MKS
  */
  #include"main.h"
+#define SIMON 1
+#define SIMOFF 0
+#define SimulationMode SIMON
  
  extern TIM_HandleTypeDef htim7;
  extern TIM_HandleTypeDef htim6;
@@ -29,15 +32,33 @@
  	if(htim == &htim6)
 	{
  		Flag100milliSeconds=1;
+#if SimulationMode== SIMON
+ 		SimCount= SimCount+1;
+ 		if(SimCount == 2)
+		{
+			//HAL_GPIO_TogglePin(GPIOC, RELAY3_Pin);
+			//Sim_Trigger = GPIO_PIN_RESET;
+ 			HAL_GPIO_WritePin(GPIOC,RELAY3_Pin,GPIO_PIN_SET);
+		}
+ 		else if(SimCount == 3){
+ 			HAL_GPIO_WritePin(GPIOC,RELAY3_Pin,GPIO_PIN_RESET);
+ 		}
+ 		else if(SimCount==7){
+ 			HAL_GPIO_WritePin(GPIOC,RELAY4_Pin,GPIO_PIN_SET);
+ 		}
+ 		else if(SimCount==8){
+ 		 	HAL_GPIO_WritePin(GPIOC,RELAY4_Pin,GPIO_PIN_RESET);
+ 		}
+ 		else if(SimCount==20)
+ 		{
+ 			SimCount=0;
+ 		}
+#endif
+
  		if(++LocCount1S >= 10)
 		{
 			LocCount1S=0;
-			if(++SimCount >= 20)
-			{
-				SimCount=0;
-				HAL_GPIO_TogglePin(GPIOC, RELAY3_Pin);
-				//Sim_Trigger = GPIO_PIN_RESET;
-			}
+
 			Flag1Second =1;
 			if(commFeedbackFlag==1){
 				commFeedbackFlag=0;
