@@ -8,8 +8,12 @@
 #define PRESSMAC 1
 #define INJECTIONMAC 2
 
+#define MACTYPEWITHEJECTIONON 1
+#define MACTYPEWITHEJECTIONOFF 0
+
 /*Application tuning*/
-#define MACTYPE PRESSMAC
+#define MACTYPE INJECTIONMAC
+#define MACTYPEWITHEJECTION MACTYPEWITHEJECTIONON
 /********************/
 
 uint8_t ProductionInput1,ProductionInput2;
@@ -18,7 +22,9 @@ uint8_t MachineState_Auto;
 uint16_t GPIO_Pin_Value1,GPIO_Pin_Value2;
 uint16_t ProductionTest;
 
-extern uint16_t MAC_Gen_Prod_Input1_Production,productionInc;
+extern uint16_t MAC_Gen_Prod_Input1_Production;
+extern uint16_t MAC_Gen_Rej_Input_Production;
+extern uint16_t productionInc;
 extern uint8_t UpdateStorage;
 
 
@@ -52,11 +58,20 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 #if MACTYPE == INJECTIONMAC
 		if(GPIO_Pin == ProductionInput1_Pin)
 		{
-		  ++ProductionInput1;
-		  ProductionInputFallingEdge1 = 1;
-		  ProductionInputFallingEdge2 = 0;
 		  GPIO_Pin_Value1 = GPIO_Pin;
 		  MAC_Gen_Prod_Input1_Production =1;
+		  MAC_Gen_Rej_Input_Production=0;
+		  productionInc = productionInc+1;
+		  UpdateStorage=1;
+		}
+#endif
+
+#if MACTYPEWITHEJECTION == MACTYPEWITHEJECTIONON
+		if(GPIO_Pin == ProductionInput2_Pin)
+		{
+		  GPIO_Pin_Value2 = GPIO_Pin;
+		  MAC_Gen_Prod_Input1_Production =0;
+		  MAC_Gen_Rej_Input_Production=1;
 		  productionInc = productionInc+1;
 		  UpdateStorage=1;
 		}

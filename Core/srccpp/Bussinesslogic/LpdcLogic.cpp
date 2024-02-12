@@ -9,6 +9,8 @@ extern "C"{
 }
 #include "LpdcLogic.h"
 #include "main.h"
+#define INDICATIONOFFSET 10
+
 GPIO_PinState GPIO_PinStateMac;
 GPIO_PinState GPIO_PinStateEjection;
 GPIO_PinState GPIO_PinStateRej;
@@ -52,8 +54,6 @@ void LpdcLogic::run()
 	shiftChange();
 	machineControl();
 	productChange();
-	production();
-	manualRejection();
 	mAlarmControl();
 }
 
@@ -142,13 +142,21 @@ void LpdcLogic::machineControl(void)
 		}
 	}
 	else if(triggerStartForReq==2){
-		if((productionInc <= productionTarget)&&(startStopStatus!=2))
+		if((productionInc <= productionTarget)&&(startStopStatus!=2))/*FInal Stop*/
 		{
 			HAL_GPIO_WritePin(GPIOC, RELAY4_Pin, GPIO_PIN_SET);
 		}
 		else
 		{
 			HAL_GPIO_WritePin(GPIOC, RELAY4_Pin, GPIO_PIN_RESET);
+		}
+		if((productionInc <= (productionTarget-INDICATIONOFFSET))&&(startStopStatus!=2))/*Pre indication*/
+		{
+			HAL_GPIO_WritePin(GPIOC, RELAY3_Pin, GPIO_PIN_SET);
+		}
+		else
+		{
+			HAL_GPIO_WritePin(GPIOC, RELAY3_Pin, GPIO_PIN_RESET);
 		}
 	}
 

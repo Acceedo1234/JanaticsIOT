@@ -72,14 +72,14 @@ void ESPRXDataSeg(void)
 	itemNumber[0] = Uart_rx_buffer[54];
 
 	commFeedbackFlag = 1;
-if((esp8266IpObtained==0)&&(ipConfimation==1)){
-	for(as = 25;as<= 41;as++){
-		if(tempbuff[as] == 34)//"
-		{esp8266IpObtained=1;break;}
-		++len_espIpAddress;
-		espIpAddress[as-25]= tempbuff[as];
+	if((esp8266IpObtained==0)&&(ipConfimation==1)){
+		for(as = 25;as<= 41;as++){
+			if(tempbuff[as] == 34)//"
+			{esp8266IpObtained=1;break;}
+			++len_espIpAddress;
+			espIpAddress[as-25]= tempbuff[as];
+		}
 	}
-}
 
 }
 

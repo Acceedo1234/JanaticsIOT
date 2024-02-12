@@ -7,7 +7,7 @@
  #include"main.h"
 #define SIMON 1
 #define SIMOFF 0
-#define SimulationMode SIMON
+#define SimulationMode SIMOFF
  
  extern TIM_HandleTypeDef htim7;
  extern TIM_HandleTypeDef htim6;
