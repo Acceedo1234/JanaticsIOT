@@ -35,7 +35,7 @@ uint8_t serverAddress[20],serverAddressK1[20];
 uint8_t userNameWifi[20],userNameWifiK1[20];
 uint8_t passwordWifi[20],passwordWifiK1[20];
 uint8_t shiftP,len_i;
-uint16_t dwinRxFramValid;
+uint16_t dwinRxFramValid1,dwinRxFramValid2;
 uint8_t updateDwindata;
 uint8_t Dwinseq;
 uint8_t lengthOfServerAdd,lengthOfUserName,lengthOfPassword;
@@ -198,8 +198,9 @@ void Dwinhmi::dwinDecoder()
 	if(!Rx_Dwin_Complete){return;}
 	Rx_Dwin_Complete=0;
 
-	dwinRxFramValid = ((DwinDatabuffer[23]<<8)|DwinDatabuffer[24]);
-	if(dwinRxFramValid > 0){
+	dwinRxFramValid1 = ((DwinDatabuffer[23]<<8)|DwinDatabuffer[24]);
+	dwinRxFramValid2 = ((DwinDatabuffer[51]<<8)|DwinDatabuffer[52]);
+	if((dwinRxFramValid1 > 0)&&(dwinRxFramValid2 > 0)){
 		machineId  = ((DwinDatabuffer[23]<<8)|DwinDatabuffer[24]);
 		portNumber = ((DwinDatabuffer[51]<<8)|DwinDatabuffer[52]);
 		for(shiftP=1,len_i=0;shiftP<=22;shiftP++,len_i++){

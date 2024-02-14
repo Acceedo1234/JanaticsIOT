@@ -9,7 +9,7 @@ extern "C"{
 }
 #include "LpdcLogic.h"
 #include "main.h"
-#define INDICATIONOFFSET 10
+#define INDICATIONOFFSET 20
 
 GPIO_PinState GPIO_PinStateMac;
 GPIO_PinState GPIO_PinStateEjection;
