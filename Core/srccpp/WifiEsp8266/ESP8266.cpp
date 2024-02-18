@@ -45,6 +45,8 @@ extern uint8_t refinc;
 extern uint8_t BlockStatusOffline[40];
 extern uint8_t espIpAddress[16];
 extern uint8_t len_espIpAddress;
+extern uint8_t CMDATCWJAPUsernamePswGlobal[60];
+extern uint8_t noOfByteUsrPsw;
 
 
 ESP8266::ESP8266() {
@@ -141,12 +143,12 @@ void ESP8266::Send_WifiCmd()
 	}
 	break;
 	case 30:   //CWJAP	   //userid-9digit,psw 8digit  //userid-5digit,psw 8digit
-	NoOfdata_byte=45;//41;//32;
 	Rxseqdecoder=2;
 	wifi_command=41;
 	Timerdelay=0;
 	bufferptr=0;
-	HAL_UART_Transmit_IT(&hlpuart1,CMDATCWJAPUsernamePsw,NoOfdata_byte);
+	//CMDATCWJAPUsernamePsw =
+	HAL_UART_Transmit_IT(&hlpuart1,CMDATCWJAPUsernamePswGlobal,noOfByteUsrPsw);
 	break;		   //add retry
 	case 41:	   //resend if o replay
 	if(++Timerdelay >30)

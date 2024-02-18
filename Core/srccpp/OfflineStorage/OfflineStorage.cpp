@@ -55,6 +55,8 @@ extern uint8_t passwordWifi[20],passwordWifiK1[20];
 uint16_t productionIncK1;
 uint8_t triggerStartForReqK1;
 uint8_t startStopStatusK1;
+uint8_t CMDATCWJAPUsernamePswGlobal[60];
+uint8_t noOfByteUsrPsw;
 
 //uint8_t Checkbuf[100];
 OfflineStorage::OfflineStorage() {
@@ -241,6 +243,10 @@ void OfflineStorage::processDataWrite()
 void OfflineStorage::dwinCloudDataRead()
 {
 	uint8_t i;
+	uint8_t CMDATCWJAPUsernamePswHead[10]={'A','T','+','C','W','J','A','P','=','"'};
+	uint8_t CMDATCWJAPUsernamePswBody[3]={'"',',','"'};
+	uint8_t CMDATCWJAPUsernamePswTail[3]={'"','\r','\n'};
+	uint8_t lenp,lenk;
 	W25qxx_ReadSector(couldData,605,0,63);
 	for(i=0;i<20;i++){
 	serverAddress[i] = couldData[i];
@@ -254,7 +260,30 @@ void OfflineStorage::dwinCloudDataRead()
 	lengthOfServerAdd = couldData[60];
 	lengthOfUserName  =	couldData[61];
 	lengthOfPassword = couldData[62];
+	memcpy(serverAddressK1,serverAddress,20);
+	memcpy(userNameWifiK1,userNameWifi,20);
+	memcpy(passwordWifiK1,passwordWifi,20);
 
+	noOfByteUsrPsw =0;
+	for(lenp=noOfByteUsrPsw;lenp<10;lenp++){
+		CMDATCWJAPUsernamePswGlobal[lenp] = CMDATCWJAPUsernamePswHead[lenp];}
+	noOfByteUsrPsw=0+10;
+	for(lenp=noOfByteUsrPsw,lenk=0;lenk<lengthOfUserName;lenp++,lenk++){
+		CMDATCWJAPUsernamePswGlobal[lenp] = userNameWifi[lenk];
+	}
+	noOfByteUsrPsw=0+10+lengthOfUserName;
+	for(lenp=noOfByteUsrPsw,lenk=0;lenk<3;lenp++,lenk++){
+			CMDATCWJAPUsernamePswGlobal[lenp] = CMDATCWJAPUsernamePswBody[lenk];
+	}
+	noOfByteUsrPsw=0+10+lengthOfUserName+3;
+	for(lenp=noOfByteUsrPsw,lenk=0;lenk<lengthOfPassword;lenp++,lenk++){
+			CMDATCWJAPUsernamePswGlobal[lenp] = passwordWifi[lenk];
+	}
+	noOfByteUsrPsw=0+10+lengthOfUserName+3+lengthOfPassword;
+	for(lenp=noOfByteUsrPsw,lenk=0;lenk<3;lenp++,lenk++){
+				CMDATCWJAPUsernamePswGlobal[lenp] = CMDATCWJAPUsernamePswTail[lenk];
+	}
+	noOfByteUsrPsw=0+10+lengthOfUserName+3+lengthOfPassword+3;
 }
 
 void OfflineStorage::specialMacDataRead()
