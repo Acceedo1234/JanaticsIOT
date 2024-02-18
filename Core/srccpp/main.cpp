@@ -46,6 +46,7 @@ void cppMain()
 	offlineStorageInst.specialMacDataRead();
 	offlineStorageInst.processDataRead();
 	offlineStorageInst.dwinRxDataRead();
+	offlineStorageInst.dwinCloudDataRead();
 	esp8266Inst.Init();
 	TxSeqComplete=1;
 	Sim_Trigger = GPIO_PIN_SET;

@@ -21,8 +21,9 @@ uint16_t batchNumber;
 uint8_t resetStatus,startStopStatus,reasonEntryStatus;
 uint8_t commFeedbackFlag;
 uint8_t itemNumber[11];
-uint8_t as;
+uint8_t as,am,indexMac;
 uint8_t espIpAddress[16]={0};
+uint8_t espMacAdress[20]={0};
 uint8_t len_espIpAddress=0;
 uint8_t esp8266IpObtained=0;
 uint8_t tempbuff[100];
@@ -79,7 +80,19 @@ void ESPRXDataSeg(void)
 			++len_espIpAddress;
 			espIpAddress[as-25]= tempbuff[as];
 		}
+		for(am = 25;am<=100;am++ ){
+			if(tempbuff[am] == 43){
+				indexMac = am+15;
+			}
+		}
+		for(am = indexMac;am<= 100;am++){
+			if(tempbuff[am] == 34){break;}
+			espMacAdress[am-indexMac] =tempbuff[am];
+		}
 	}
+
+
+
 
 }
 

@@ -22,6 +22,7 @@ public:
 	void processDataRead(void);
 	void dwinRxDataRead(void);
 	void dwinCloudDataStore(void);
+	void dwinCloudDataRead(void);
 private:
 	uint8_t FlashMemProductiondata[22];
 	uint8_t specialMacData[22];

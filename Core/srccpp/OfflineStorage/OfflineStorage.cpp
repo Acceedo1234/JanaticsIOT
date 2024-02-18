@@ -212,8 +212,9 @@ void OfflineStorage::dwinCloudDataStore()
 	memcpy(serverAddressK1,serverAddress,20);
 	memcpy(userNameWifiK1,userNameWifi,20);
 	memcpy(passwordWifiK1,passwordWifi,20);
-//	W25qxx_EraseSector(605);
-//	W25qxx_WriteSector(dwinData,605,0,4);
+
+	W25qxx_EraseSector(605);
+	W25qxx_WriteSector(couldData,605,0,63);
 
 }
 void OfflineStorage::processDataWrite()
@@ -235,6 +236,25 @@ void OfflineStorage::processDataWrite()
 	W25qxx_EraseSector(603);
 	W25qxx_WriteSector(processData,603,0,8);
 	}
+}
+
+void OfflineStorage::dwinCloudDataRead()
+{
+	uint8_t i;
+	W25qxx_ReadSector(couldData,605,0,63);
+	for(i=0;i<20;i++){
+	serverAddress[i] = couldData[i];
+	}
+	for(i=0;i<20;i++){
+	userNameWifi[i] = couldData[i+20];
+	}
+	for(i=0;i<20;i++){
+	passwordWifi[i] = couldData[i+40];
+	}
+	lengthOfServerAdd = couldData[60];
+	lengthOfUserName  =	couldData[61];
+	lengthOfPassword = couldData[62];
+
 }
 
 void OfflineStorage::specialMacDataRead()
