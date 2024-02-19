@@ -33,6 +33,7 @@ extern void W25qxx_ReadSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_
 extern void W25qxx_WriteSector(uint8_t *pBuffer, uint32_t Sector_Address, uint32_t OffsetInByte, uint32_t NumByteToWrite_up_to_SectorSize);
 extern void W25qxx_EraseSector(uint32_t SectorAddr);
 extern uint8_t userNameWifi[20];
+extern uint8_t lengthOfUserName;
 uint8_t wifiusernamecheck[15] = {'N','A','V','E','E','N','P','H','O','N','E'};
 
 void ReadOnlineData(void);
@@ -187,57 +188,140 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 			 }
 		break;
 		case 3:
-			//wifiusernamecheck[15] "define the username at top"
-			//
 			if((Rxwifi_data== userNameWifi[0])&&(bufferptr==0))
 			 {
 				bufferptr=1;
 			 }
 			 else if((Rxwifi_data== userNameWifi[1])&&(bufferptr==1))
 			 {
-				bufferptr=2;
+				if(lengthOfUserName==2){
+					bufferptr=0;
+					Err_bufferptr=0;
+					Rxseqdecoder=0;
+					wifi_command=70;
+					Error_Retry=0;
+					WifiDisplay = 1;
+				}else{
+					bufferptr=2;
+				}
 			 }
 			 else if((Rxwifi_data== userNameWifi[2])&&(bufferptr==2))
 			 {
-				bufferptr=3;
+				 if(lengthOfUserName==3){
+					bufferptr=0;
+					Err_bufferptr=0;
+					Rxseqdecoder=0;
+					wifi_command=70;
+					Error_Retry=0;
+					WifiDisplay = 1;
+				}else{
+					bufferptr=3;
+				}
 			 }
 
 			 else if((Rxwifi_data== userNameWifi[3])&&(bufferptr==3))
 			 {
-				bufferptr=4;
+				 if(lengthOfUserName==4){
+						bufferptr=0;
+						Err_bufferptr=0;
+						Rxseqdecoder=0;
+						wifi_command=70;
+						Error_Retry=0;
+						WifiDisplay = 1;
+					}else{
+						bufferptr=4;
+					}
 			 }
 			 else if((Rxwifi_data== userNameWifi[4])&&(bufferptr==4))
 			 {
-				bufferptr=5;
+				 if(lengthOfUserName==5){
+					bufferptr=0;
+					Err_bufferptr=0;
+					Rxseqdecoder=0;
+					wifi_command=70;
+					Error_Retry=0;
+					WifiDisplay = 1;
+				}else{
+					bufferptr=5;
+				}
 			 }
 			 else if((Rxwifi_data== userNameWifi[5])&&(bufferptr==5))
 			 {
-				bufferptr=6;
+				 if(lengthOfUserName==6){
+					bufferptr=0;
+					Err_bufferptr=0;
+					Rxseqdecoder=0;
+					wifi_command=70;
+					Error_Retry=0;
+					WifiDisplay = 1;
+				}else{
+					bufferptr=6;
+				}
 			 }
 			 else if((Rxwifi_data== userNameWifi[6])&&(bufferptr==6))
 			 {
-				bufferptr=7;
+				 if(lengthOfUserName==7){
+					bufferptr=0;
+					Err_bufferptr=0;
+					Rxseqdecoder=0;
+					wifi_command=70;
+					Error_Retry=0;
+					WifiDisplay = 1;
+				}else{
+					bufferptr=7;
+				}
 			 }
 			 else if((Rxwifi_data== userNameWifi[7])&&(bufferptr==7))
 			 {
-				bufferptr=8;
+				 if(lengthOfUserName==8){
+					bufferptr=0;
+					Err_bufferptr=0;
+					Rxseqdecoder=0;
+					wifi_command=70;
+					Error_Retry=0;
+					WifiDisplay = 1;
+				}else{
+					bufferptr=8;
+				}
 			 }
 			 else if((Rxwifi_data== userNameWifi[8])&&(bufferptr==8))
 			 {
-				bufferptr=9;
+				 if(lengthOfUserName==9){
+						bufferptr=0;
+						Err_bufferptr=0;
+						Rxseqdecoder=0;
+						wifi_command=70;
+						Error_Retry=0;
+						WifiDisplay = 1;
+					}else{
+						bufferptr=9;
+					}
 			 }
 			 else if((Rxwifi_data== userNameWifi[9])&&(bufferptr==9))
 			 {
-				 bufferptr=0;
-				Err_bufferptr=0;
-				Rxseqdecoder=0;
-				wifi_command=70;
-				Error_Retry=0;
-				WifiDisplay = 1;
+				 if(lengthOfUserName==10){
+					bufferptr=0;
+					Err_bufferptr=0;
+					Rxseqdecoder=0;
+					wifi_command=70;
+					Error_Retry=0;
+					WifiDisplay = 1;
+				}else{
+					bufferptr=10;
+				}
 			 }
 			 else if((Rxwifi_data== wifiusernamecheck[10])&&(bufferptr==10))
 			 {
-				bufferptr=11;
+				 if(lengthOfUserName==11){
+						bufferptr=0;
+						Err_bufferptr=0;
+						Rxseqdecoder=0;
+						wifi_command=70;
+						Error_Retry=0;
+						WifiDisplay = 1;
+					}else{
+						bufferptr=11;
+					}
 			 }
 			 else if((Rxwifi_data== wifiusernamecheck[11])&&(bufferptr==11))
 			 {
@@ -249,21 +333,6 @@ void ESPRxDecoder(unsigned char Rxwifi_data,unsigned char Rxseqdecoder)
 				Error_Retry=0;
 				WifiDisplay = 1;
 			 }
-			 else if((Rxwifi_data=='A')&&(bufferptr==12))
-			 {
-				bufferptr=13;
-			 }
-			 else if((Rxwifi_data=='X')&&(bufferptr==13))
-				 {
-				bufferptr=0;
-				Err_bufferptr=0;
-				Rxseqdecoder=0;
-				wifi_command=70;
-				Error_Retry=0;
-				WifiDisplay = 1;
-//				WifiStatusVar = 2;
-			 }
-
 
 
 			 if((Rxwifi_data=='N')&&(Err_bufferptr==0))
